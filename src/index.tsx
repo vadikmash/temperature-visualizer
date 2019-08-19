@@ -2,6 +2,12 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const SerialPort = require('serialport')
+const Readline = require('@serialport/parser-readline')
+
+const React = require('react');
+const ReactDOM = require('react-dom')
+// import App = require('./App')
+
 SerialPort.list().then(ports => {
   document.getElementById("port-list").innerHTML = `
   <h1>Detected Serial Ports</h1>
@@ -11,19 +17,30 @@ SerialPort.list().then(ports => {
   `
 })
 
-
 const portName = 'COM5';
 
 const port = new SerialPort(portName, {
   baudRate: 115200,
 });
 
+const parser = port.pipe(new Readline());
 
 port.on('open', () => console.log('connection opened'));
 
+let string;
 
-port.on('data', (data) => {
-  const string = [...data].reduce((accum, d) => accum + String.fromCharCode(d), '')
-  console.log(string)
+parser.on('data', (data) => {
+  string = String(data)
+  // console.log(string)
 });
 
+setInterval(() =>   document.getElementById('data').innerText = string, 300)
+
+
+class App extends React.Component {
+  render() {
+    return (<div>hello world</div>)
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))

@@ -6,12 +6,15 @@
     "name": "vadikmash",
     "email": "vadikmash@gmail.com"
   },
-  "main": "main.js",
+  "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
+    "build": "react-scripts build",
     "prepare": "electron-build-env npm rebuild",
-    "pack": "electron-packager ./ temperature-visualizer  --platform=win32 --arch=x64",
-    "setup": "electron-installer-windows --src temperature-visualizer-win32-x64/ --dest dist/installers/"
+    "pack": "electron-packager . temperature-visualizer  --platform=win32 --arch=x64",
+    "setup": "electron-installer-windows --src temperature-visualizer-win32-x64/ --dest dist/installers/",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w"
   },
   "repository": "https://github.com/serialport/electron-serialport-quick-start",
   "keywords": [
@@ -26,10 +29,30 @@
     "electron-installer-windows": "^2.0.0",
     "electron-packager": "^14.0.4",
     "electron-windows-installer": "^1.7.8",
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "typescript": "^3.5.3",
+    "typings": "^2.1.1"
   },
   "dependencies": {
     "electron-build-env": "^0.2.0",
-    "serialport": "^7.1.5"
+    "serialport": "^7.1.5",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "react-scripts": "3.1.0",
+    "react-window": "^1.8.5",
+    "redux": "^4.0.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

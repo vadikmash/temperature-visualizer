@@ -14,11 +14,13 @@
       <li>Chromium <script>document.write(process.versions.chrome)</script></li>
       <li>and Electron <script>document.write(process.versions.electron)</script></li>
     </ul>
+    <div id="port-list"></div>
+    <div id="data"></div>
+    <div id="root"></div>
 
     <script>
       // You can also require other files to run in this process
-      require('./renderer.js')
+      require('./index.js')
     </script>
-    <div id="port-list"></div>
   </body>
 </html>
