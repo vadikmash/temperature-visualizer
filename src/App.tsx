@@ -1,8 +1,8 @@
 import React = require('react')
 import { Provider } from 'react-redux'
 
-let store = require('./store');
-store = store.default;
+import store from './store';
+const Canvas = require('./components/canvas').default
 
 // import { openSocket, changeNickname, showNicknameDialog } from './actions/chat'
 
@@ -11,6 +11,7 @@ const App = () => {
   return (
   <Provider store={store}>
     <div>HELLO WORLD</div>
+    <Canvas></Canvas>
   </Provider>
   )
 };
