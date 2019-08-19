@@ -6,7 +6,11 @@ const Readline = require('@serialport/parser-readline')
 
 const React = require('react');
 const ReactDOM = require('react-dom')
-// import App = require('./App')
+
+let App = require('./App')
+App = App.default
+
+console.log(App)
 
 SerialPort.list().then(ports => {
   document.getElementById("port-list").innerHTML = `
@@ -37,10 +41,10 @@ parser.on('data', (data) => {
 setInterval(() =>   document.getElementById('data').innerText = string, 300)
 
 
-class App extends React.Component {
-  render() {
-    return (<div>hello world</div>)
-  }
-}
+// class App extends React.Component {
+//   render() {
+//     return (<div>hello world</div>)
+//   }
+// }
 
 ReactDOM.render(<App />, document.getElementById('root'))

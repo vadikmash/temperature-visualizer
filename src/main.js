@@ -1,5 +1,5 @@
-var _a = require('electron'), app = _a.app, BrowserWindow = _a.BrowserWindow;
-var mainWindow;
+const { app, BrowserWindow } = require('electron');
+let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,

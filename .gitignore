@@ -4,3 +4,7 @@ dist
 public
 build
 temperature-visualizer-win32-x64
+
+*.js
+
+*.js.map

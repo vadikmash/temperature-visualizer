@@ -9,6 +9,7 @@
   "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
+    "postinstall": "typings install",
     "build": "react-scripts build",
     "prepare": "electron-build-env npm rebuild",
     "pack": "electron-packager . temperature-visualizer  --platform=win32 --arch=x64",
