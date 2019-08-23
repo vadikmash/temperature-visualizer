@@ -35,6 +35,8 @@
     "typings": "^2.1.1"
   },
   "dependencies": {
+    "@material-ui/core": "^4.3.3",
+    "css-modules-require-hook": "^4.2.3",
     "electron-build-env": "^0.2.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

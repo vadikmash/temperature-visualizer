@@ -1,26 +1,26 @@
 import React = require('react')
 import { Provider } from 'react-redux'
 
+const styles = require('./App.css')
+
 import store from './store';
 const Canvas = require('./components/canvas').default
+const ControlPannel = require('./components/controlPannel').default
+const Console = require('./components/console').default
 
-// import { openSocket, changeNickname, showNicknameDialog } from './actions/chat'
 
 const App = () => {
-
   return (
-  <Provider store={store}>
-    <div>HELLO WORLD</div>
-    <Canvas></Canvas>
+  <Provider store={store} >
+    <div className={styles.wrapper}>
+      <div style={ { display: 'flex', flexWrap: 'wrap' } }>
+        <Canvas />
+        <Console />
+      </div>
+      <ControlPannel />
+    </div>
   </Provider>
   )
 };
-
-
-// class App extends React.Component<{}, {}> {
-//   render() {
-//     return (<div>hello world</div>)
-//   }
-// }
 
 export default App
