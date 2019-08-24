@@ -31,11 +31,15 @@ export const setAvaliablePorts = (ports) => {
   const state: any = store.getState()
   const { portName, avaliablePorts } = state.data
   const oldLength = avaliablePorts.length
-  if (!portName && ports
+  if (!portName
       || isPortLost(ports, portName)
       || oldLength < ports.length) {
-    store.dispatch(setPortName(ports[0].comName))
-    store.dispatch(comConnect())
+    if (ports) {
+      store.dispatch(setPortName(ports[0].comName))
+      store.dispatch(comConnect())
+    } else {
+      store.dispatch(setPortName(''))
+    }
   }
   return {
     type: SET_AVALIABLE_PORTS,
@@ -73,7 +77,6 @@ export const setVisualizer = (visualizer: string) => (
 
 export const findAvailablePorts = () => {
   SerialPort.list().then(ports => {
-    console.log(ports)
     store.dispatch(setAvaliablePorts(ports))
   })
 } 
