@@ -10,9 +10,6 @@ import {
   comConnect
 } from '../../actions/data';
 
-
-
-
 const styles = require('./index.css')
 
 
@@ -90,7 +87,6 @@ const ControlPannel = ({
       aria-labelledby="input-slider"
     />
     <Input
-      // className={classes.input}
       value={blur}
       margin="dense"
       onChange={
