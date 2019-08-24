@@ -2,7 +2,13 @@ import React = require('react')
 import { Input, MenuItem, Select, Slider, Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 
-import { setPort, setBlur, setRange, setVisualizer } from '../../actions/data';
+import {
+  setPortName,
+  setBlur,
+  setRange,
+  setVisualizer,
+  comConnect
+} from '../../actions/data';
 
 
 
@@ -11,23 +17,27 @@ const styles = require('./index.css')
 
 
 const ControlPannel = ({ 
-  port,
+  portName,
   visualizer,
   blur,
   range,
   avaliablePorts,
-  onSetPort,
+  onSetPortName,
   onSetVisualizer,
   onSetBlur,
-  onSetRange
+  onSetRange,
+  onComConnect
 }) => (
   <div className={styles.pannel}>
     <Typography id="port-dropdown" gutterBottom>
       Select port
     </Typography>
     <Select
-      value={port}
-      onChange={(e) => onSetPort(e.target.value)}
+      value={portName}
+      onChange={e => { 
+        onSetPortName(e.target.value)
+        onComConnect()
+      }}
     >
       { 
         avaliablePorts
@@ -105,10 +115,11 @@ const mapStateToProps = ({data}) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onSetPort: port => dispatch(setPort(port)),
+    onSetPortName: port => dispatch(setPortName(port)),
     onSetBlur: blur => dispatch(setBlur((blur > 100 ? 100 : blur) < 0 ? 0 : (blur > 100 ? 100 : blur))),
     onSetRange: range => dispatch(setRange(range)),
-    onSetVisualizer: visualizer => dispatch(setVisualizer(visualizer))
+    onSetVisualizer: visualizer => dispatch(setVisualizer(visualizer)),
+    onComConnect: () => dispatch(comConnect())
   }
 )
 

@@ -3,12 +3,16 @@ import visualizers = require('../visualizers')
 
 
 const initialState = {
-  port: 'COM5',
+  portName: '',
+  port: null,
+  parser: null,
   avaliablePorts: [],
   visualizer: 'BW',
   visualizingFunction: visualizers.blackAndWhite,
   range: [20, 36],
-  blur: 0
+  blur: 0,
+  canvas: null,
+  context: null
 }
 
 
@@ -19,10 +23,10 @@ const data = (state = initialState, action) => {
         ...state,
         blur: action.blur
       }  
-      case ACTIONS.SET_COMPORT:
+      case ACTIONS.SET_PORT_NAME:
         return {
           ...state,
-          port: action.port
+          portName: action.portName
         }  
       case ACTIONS.SET_VISUALIZER:
         let visualizingFunction
@@ -61,6 +65,18 @@ const data = (state = initialState, action) => {
         return {
           ...state,
           avaliablePorts: action.ports
+        } 
+      case ACTIONS.SET_CANVAS:
+        return {
+          ...state,
+          canvas: action.canvas,
+          context: action.context
+        } 
+      case ACTIONS.COM_CONNECT:
+        return {
+          ...state,
+          port: action.port,
+          parser: action.parser
         } 
     default:
       return state

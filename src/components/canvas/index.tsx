@@ -5,7 +5,12 @@ const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
 const StackBlur = require('stackblur-canvas')
 
-import { setAvaliablePorts } from '../../actions/data'
+import { 
+  setAvaliablePorts,
+  setCanvas,
+  comConnect,
+  findAvailablePorts
+} from '../../actions/data'
 
 let canvas
 
@@ -27,62 +32,62 @@ let canvas
 //                [23.45,25.08,25.02,26.28,27.56,27.27,28.08,27.45,27.34,28.28,27.52,27.83,26.93,27.64,27.23,26.56],
 //                [21.97,24.02,24.00,24.56,25.25,25.45,26.17,26.15,26.05,26.80,25.87,26.96,26.53,26.23,27.40,27.39]]
 
-function drawPixels(ctx, data, visializer, bottom, top, blur) {
-  let j = 0
-  String(data).split('~').forEach((row, j) => {
-    let i = 0
-    JSON.parse(row).forEach((t, i) => {
-      // const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
-      // ctx.fillStyle = `rgb(${shade}, ${shade}, ${shade})`
-      ctx.fillStyle = visializer(t, bottom, top)
-      ctx.beginPath();
-      ctx.rect(i * 48, j * 48, 48, 48)
-      ctx.fill()
-    })
-  })
-  StackBlur.canvasRGB(canvas, 0, 0, 768, 192, blur);
-}
+// function drawPixels(canvas, ctx, data, visializer, bottom, top, blur) {
+//   let j = 0
+//   String(data).split('~').forEach((row, j) => {
+//     let i = 0
+//     JSON.parse(row).forEach((t, i) => {
+//       ctx.fillStyle = visializer(t, bottom, top)
+//       ctx.beginPath();
+//       ctx.rect(i * 48, j * 48, 48, 48)
+//       ctx.fill()
+//     })
+//   })
+//   StackBlur.canvasRGB(canvas, 0, 0, 768, 192, blur);
+// }
 
 class Canvas extends React.Component {
   componentDidMount() {
-    const ctx = canvas.getContext("2d");
+    this.props.onSetCanvas(canvas)
+    findAvailablePorts()
+    setInterval(findAvailablePorts, 1500)
+    // const ctx = canvas.getContext("2d");
 
-    SerialPort.list().then(ports => {
-      console.log(ports)
-      this.props.onSetAvaliablePorts(ports)
-    })
+    // SerialPort.list().then(ports => {
+    //   this.props.onSetAvaliablePorts(ports)
+    // })
 
-    const portName = 'COM5';
+    // const portName = this.props.port;
 
-    const port = new SerialPort(portName, {
-      baudRate: 115200,
-    });
+    // const port = new SerialPort(portName, {
+    //   baudRate: 115200,
+    // });
 
-    const parser = port.pipe(new Readline());
+    // const parser = port.pipe(new Readline());
 
-    port.on('open', () => console.log('connection opened'));
+    // port.on('open', () => console.log('connection opened'));
 
-    port.on('error', (err) => {
-      console.log('Error: ', err.message)
-    })
+    // port.on('error', (err) => {
+    //   console.log('Error: ', err.message)
+    // })
 
-    let data = null;
+    // let data = null;
 
-    parser.on('data', (d) => {
-      data = d
-      const {
-        blur,
-        range,
-        visualizingFunction
-      } = this.props
-      requestAnimationFrame(drawPixels.bind(
-        null,
-        ctx,
-        data,
-        visualizingFunction,
-        range[0], range[1],
-        blur))
-    });
+    // parser.on('data', (d) => {
+    //   data = d
+    //   const {
+    //     blur,
+    //     range,
+    //     visualizingFunction
+    //   } = this.props
+    //   requestAnimationFrame(() => drawPixels(
+    //     canvas,
+    //     ctx,
+    //     data,
+    //     visualizingFunction,
+    //     range[0], range[1],
+    //     blur))
+    // });
   }
 
   render() {
@@ -108,7 +113,10 @@ const mapStateToProps = ({data}) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onSetAvaliablePorts: ports => dispatch(setAvaliablePorts(ports))
+    onSetCanvas: canvas => dispatch(setCanvas(canvas)),
+    onSetAvaliablePorts: ports => dispatch(setAvaliablePorts(ports)),
+    onComConnect: () => dispatch(comConnect()), 
+
   }
 )
 
