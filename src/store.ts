@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { createStore, combineReducers } from 'redux'
 const data = require('./reducers/data').default
 
 

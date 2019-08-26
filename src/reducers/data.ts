@@ -12,7 +12,8 @@ const initialState = {
   range: [20, 36],
   blur: 0,
   canvas: null,
-  context: null
+  context: null,
+  offsets: Array(4).fill(Array(16).fill(0))
 }
 
 
@@ -43,6 +44,12 @@ const data = (state = initialState, action) => {
           case 'B': 
             visualizingFunction = visualizers.blue
           break 
+          case 'RGB': 
+            visualizingFunction = visualizers.RGB
+          break 
+          case 'RB':
+            visualizingFunction = visualizers.RedAndBlue
+          break;
           default:
             visualizingFunction = visualizers.blackAndWhite
         }
@@ -55,6 +62,11 @@ const data = (state = initialState, action) => {
         return {
           ...state,
           blur: action.blur
+        }  
+      case ACTIONS.SET_OFFSETS:
+        return {
+          ...state,
+          offsets: action.offsets
         }  
       case ACTIONS.SET_RANGE:
         return {

@@ -1,9 +1,10 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-import { drawPixels } from '../drawPixels'
+const fs = require('fs')
 
+import { drawPixels } from '../drawPixels'
 import store from '../store';
-import { WSAEINVALIDPROVIDER } from 'constants';
+import { combineReducers } from 'redux';
 
 export const SET_BLUR = 'SET_BLUR'
 export const SET_RANGE = 'SET_RANGE'
@@ -12,6 +13,7 @@ export const SET_VISUALIZER = 'SET_VISUALIZER'
 export const SET_AVALIABLE_PORTS = 'SET_AVALIABLE_PORTS'
 export const SET_CANVAS = 'SET_CANVAS'
 export const COM_CONNECT = 'COM_CONNECT'
+export const SET_OFFSETS = 'SET_OFFSETS'
 
 
 export const setCanvas = (canvas) => {
@@ -81,6 +83,52 @@ export const findAvailablePorts = () => {
   })
 } 
 
+export const saveImage = () => {
+  const state: any = store.getState()
+  const { canvas } = state.data
+  const url = canvas.toDataURL('image/jpg', 0.8)
+  const base64Data = url.replace(/^data:image\/png;base64,/, "")
+  const date = new Date().toLocaleString().split(', ').join('_').split('.').join('_').split(':').join('_')
+  fs.writeFile(`${date}_image.jpg`, base64Data, 'base64', (err) => {
+    if (err) console.log(err)
+    console.log('image is saved')
+  })
+}
+
+let dataBuf
+
+export const logToFile = () => {
+  const date = new Date().toLocaleString().split(', ').join('_')
+  const str = `${date}-${String(dataBuf)}\r\n`
+  fs.appendFile('log.txt', str, (err) =>{
+    if (err) console.log(err)
+    console.log('logged to log.txt')
+  })
+}
+
+export const calibrate = () => {
+  const temperatures = String(dataBuf).split('~').map(arr => (
+    JSON.parse(arr)
+  ))
+
+  const average = temperatures.reduce((accum, val) => (
+    accum + val.reduce((a, v) => a + v, 0)
+  ), 0) / temperatures.length / temperatures[0].length
+
+  const offsets = temperatures.map(arr => (
+    arr.map(t => (
+      average - t
+    ))
+  ))
+
+  console.log(offsets)
+
+  return {
+    type: SET_OFFSETS,
+    offsets
+  }
+}
+
 
 export const comConnect = () => {
   const state: any = store.getState()
@@ -104,18 +152,21 @@ export const comConnect = () => {
 
 
   parser.on('data', data => {
+    dataBuf = data
     const state: any = store.getState()
     const {
       canvas,
       context,
       blur,
       range,
+      offsets,
       visualizingFunction
     } = state.data
     requestAnimationFrame(() => drawPixels(
       canvas,
       context,
       data,
+      offsets,
       visualizingFunction,
       range[0], range[1],
       blur))

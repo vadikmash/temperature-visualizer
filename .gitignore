@@ -8,3 +8,7 @@ temperature-visualizer-win32-x64
 *.js
 
 *.js.map
+
+log.txt
+tasks.txt
+*.jpg

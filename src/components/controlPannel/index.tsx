@@ -1,5 +1,12 @@
 import React = require('react')
-import { Input, MenuItem, Select, Slider, Typography } from '@material-ui/core';
+import {
+  Input,
+  MenuItem,
+  Select,
+  Slider,
+  Typography,
+  Button
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import {
@@ -7,7 +14,10 @@ import {
   setBlur,
   setRange,
   setVisualizer,
-  comConnect
+  comConnect,
+  saveImage,
+  logToFile,
+  calibrate
 } from '../../actions/data';
 
 const styles = require('./index.css')
@@ -23,7 +33,8 @@ const ControlPannel = ({
   onSetVisualizer,
   onSetBlur,
   onSetRange,
-  onComConnect
+  onComConnect,
+  onCalibrate
 }) => (
   <div className={styles.pannel}>
     <Typography id="port-dropdown" gutterBottom>
@@ -68,6 +79,12 @@ const ControlPannel = ({
       <MenuItem key="B" value="B">
         Blue
       </MenuItem>
+      <MenuItem key="RGB" value="RGB">
+        RGB
+      </MenuItem>
+      <MenuItem key="RB" value="RB">
+        Red&Blue
+      </MenuItem>
     </Select>
     <Typography id="range-slider" gutterBottom>
       Temperature range
@@ -100,6 +117,27 @@ const ControlPannel = ({
         'aria-labelledby': 'input-slider',
       }}
     />
+    <div>
+      <Button
+        onClick={logToFile} 
+        color="primary"
+      >
+        Log to file
+      </Button>
+      <Button
+        color="secondary"
+        onClick={saveImage}
+      >
+        Save image
+      </Button>
+      <br />
+      <Button
+        color="primary"
+        onClick={onCalibrate}
+      >
+        Calibrate
+      </Button>
+    </div>
   </div>
 )
 
@@ -115,7 +153,8 @@ const mapDispatchToProps = dispatch => (
     onSetBlur: blur => dispatch(setBlur((blur > 100 ? 100 : blur) < 0 ? 0 : (blur > 100 ? 100 : blur))),
     onSetRange: range => dispatch(setRange(range)),
     onSetVisualizer: visualizer => dispatch(setVisualizer(visualizer)),
-    onComConnect: () => dispatch(comConnect())
+    onComConnect: () => dispatch(comConnect()),
+    onCalibrate: () => dispatch(calibrate())
   }
 )
 
