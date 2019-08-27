@@ -39,7 +39,7 @@ export const RedAndBlue = (t, bottom, top) => {
   const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
   const R = shade
   const B = 255 - shade
-  const G = shade / 2
+  const G = 0
 
   return `rgb(${R}, ${G}, ${B})`
 }
