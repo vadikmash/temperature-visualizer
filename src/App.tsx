@@ -10,7 +10,7 @@ const Console = require('./components/console').default
 const App = () => {
   return (
     <div className={styles.wrapper}>
-      <div style={ { display: 'flex', flexWrap: 'wrap' } }>
+      <div>
         <Canvas />
         <Console />
       </div>

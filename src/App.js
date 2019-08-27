@@ -7,7 +7,7 @@ const ControlPannel = require('./components/controlPannel').default;
 const Console = require('./components/console').default;
 const App = () => {
     return (React.createElement("div", { className: styles.wrapper },
-        React.createElement("div", { style: { display: 'flex', flexWrap: 'wrap' } },
+        React.createElement("div", null,
             React.createElement(Canvas, null),
             React.createElement(Console, null)),
         React.createElement(ControlPannel, null)));

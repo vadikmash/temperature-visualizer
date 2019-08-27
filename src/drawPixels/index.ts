@@ -2,7 +2,6 @@ const StackBlur = require('stackblur-canvas')
 
 
 export const drawPixels = (canvas, ctx, data, offsets, visializer, bottom, top, blur) => {
-  console.log(offsets)
   let j = 0
   String(data).split('~').forEach((row, j) => {
     let i = 0

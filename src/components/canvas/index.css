@@ -1,6 +1,3 @@
 .canvas {
-  flex-basis: 100%;
-  height: 'fit-content';
-  border: '1px solid black';
-  /* margin: 10px; */
+  display: block;
 }

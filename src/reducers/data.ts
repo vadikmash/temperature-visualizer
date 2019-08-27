@@ -12,13 +12,32 @@ const initialState = {
   range: [20, 36],
   blur: 0,
   canvas: null,
+  canvasSize: { height: 0, width: 0 },
+  pixelSize: 48,
   context: null,
-  offsets: Array(4).fill(Array(16).fill(0))
+  offsets: Array(4).fill(Array(16).fill(0)),
+  comData: { data: null },
+  hintIsVisible: false,
+  mousePosition: { x: 0, y: 0 }
 }
 
 
 const data = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.SHOW_HINT:
+      return {
+        ...state,
+        hintIsVisible: true,
+        mousePosition: {
+          x: action.event.clientX,
+          y: action.event.clientY
+        }
+      }
+    case ACTIONS.HIDE_HINT:
+      return {
+        ...state,
+        hintIsVisible: false      
+      }
     case ACTIONS.SET_BLUR:
       return {
         ...state,
@@ -88,7 +107,8 @@ const data = (state = initialState, action) => {
         return {
           ...state,
           port: action.port,
-          parser: action.parser
+          parser: action.parser,
+          comData: action.comData
         } 
     default:
       return state

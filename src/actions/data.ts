@@ -5,6 +5,7 @@ const fs = require('fs')
 import { drawPixels } from '../drawPixels'
 import store from '../store';
 import { combineReducers } from 'redux';
+import { object } from 'prop-types';
 
 export const SET_BLUR = 'SET_BLUR'
 export const SET_RANGE = 'SET_RANGE'
@@ -14,7 +15,22 @@ export const SET_AVALIABLE_PORTS = 'SET_AVALIABLE_PORTS'
 export const SET_CANVAS = 'SET_CANVAS'
 export const COM_CONNECT = 'COM_CONNECT'
 export const SET_OFFSETS = 'SET_OFFSETS'
+export const SHOW_HINT = 'SHOW_HINT'
+export const HIDE_HINT = 'HIDE_HINT'
 
+
+export const showHint = (event) => (
+  {
+    type: SHOW_HINT,
+    event
+  }
+)
+
+export const hideHint = () => (
+  {
+    type: HIDE_HINT,
+  }
+)
 
 export const setCanvas = (canvas) => {
   const context = canvas.getContext('2d')
@@ -150,9 +166,13 @@ export const comConnect = () => {
     console.log('Error: ', err.message)
   })
 
+  const comData = {
+    data: null
+  }
 
   parser.on('data', data => {
     dataBuf = data
+    comData.data = data
     const state: any = store.getState()
     const {
       canvas,
@@ -175,6 +195,7 @@ export const comConnect = () => {
   return {
     type: COM_CONNECT,
     port, 
-    parser
+    parser,
+    comData
   }
 }

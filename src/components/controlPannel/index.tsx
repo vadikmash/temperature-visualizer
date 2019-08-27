@@ -1,4 +1,6 @@
 import React = require('react')
+import { connect } from 'react-redux';
+
 import {
   Input,
   MenuItem,
@@ -7,7 +9,6 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
-import { connect } from 'react-redux';
 
 import {
   setPortName,
