@@ -17,6 +17,7 @@ export const COM_CONNECT = 'COM_CONNECT'
 export const SET_OFFSETS = 'SET_OFFSETS'
 export const SHOW_HINT = 'SHOW_HINT'
 export const HIDE_HINT = 'HIDE_HINT'
+export const HIGHLIGHT_PIXEL = 'HIGHLIGHT_PIXEL'
 
 
 export const showHint = (event) => (
@@ -93,6 +94,25 @@ export const setVisualizer = (visualizer: string) => (
   }
 )
 
+export const highlightPixel = (x, y) => {
+  let highlighted = Array(4).fill(Array(16)).map(h => h.map(() => false))
+  highlighted[y][x] = true
+
+  return {
+    type: HIGHLIGHT_PIXEL,
+    highlighted
+  }
+}
+
+export const cancelHighlights = () => {
+  let highlighted = Array(4).fill(Array(16)).map(h => h.map(() => false))
+
+  return {
+    type: HIGHLIGHT_PIXEL,
+    highlighted
+  }
+}
+
 export const findAvailablePorts = () => {
   SerialPort.list().then(ports => {
     store.dispatch(setAvaliablePorts(ports))
@@ -111,11 +131,19 @@ export const saveImage = () => {
   })
 }
 
-let dataBuf
 
 export const logToFile = () => {
+  const state: any = store.getState()
+  const { temperatures } = state.data.comData
+  const { offsets } = state.data
+  const offsetTemperatures = temperatures.map((row, i) => row.map((t, j) => 
+    Math.round(t + offsets[i][j])
+  ))
+
+  const json = JSON.stringify(offsetTemperatures)
   const date = new Date().toLocaleString().split(', ').join('_')
-  const str = `${date}-${String(dataBuf)}\r\n`
+  const str = `${date},${json}\r\n`
+
   fs.appendFile('log.txt', str, (err) =>{
     if (err) console.log(err)
     console.log('logged to log.txt')
@@ -123,9 +151,8 @@ export const logToFile = () => {
 }
 
 export const calibrate = () => {
-  const temperatures = String(dataBuf).split('~').map(arr => (
-    JSON.parse(arr)
-  ))
+  const state: any = store.getState()
+  const { temperatures } = state.data.comData
 
   const average = temperatures.reduce((accum, val) => (
     accum + val.reduce((a, v) => a + v, 0)
@@ -136,8 +163,6 @@ export const calibrate = () => {
       average - t
     ))
   ))
-
-  console.log(offsets)
 
   return {
     type: SET_OFFSETS,
@@ -167,12 +192,11 @@ export const comConnect = () => {
   })
 
   const comData = {
-    data: null
+    temperatures: null
   }
 
   parser.on('data', data => {
-    dataBuf = data
-    comData.data = data
+    comData.temperatures = JSON.parse(data)
     const state: any = store.getState()
     const {
       canvas,
@@ -180,13 +204,15 @@ export const comConnect = () => {
       blur,
       range,
       offsets,
+      highlighted,
       visualizingFunction
     } = state.data
     requestAnimationFrame(() => drawPixels(
       canvas,
       context,
-      data,
+      comData.temperatures,
       offsets,
+      highlighted,
       visualizingFunction,
       range[0], range[1],
       blur))

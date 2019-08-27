@@ -1,11 +1,11 @@
 import React = require('react')
 import { connect } from 'react-redux';
-import {
-  Card
-} from '@material-ui/core';
+import { Card } from '@material-ui/core';
+
+import { highlightPixel } from '../../../actions/data'
 
 
-const getPixelTemperature = (
+const getPixel = (
   mousePosition,
   pixelSize,
   data,
@@ -25,9 +25,15 @@ const getPixelTemperature = (
       JSON.parse(arr)
     ))
 
-    return Math.round(temperatures[y][x] + offsets[y][x])
+    return  {
+      temperature: Math.round(temperatures[y][x] + offsets[y][x]),
+      xIndex: x,
+      yIndex: y
+    }
   }
-    return null
+    return {
+      temperature: null,
+    }
 }
 
 const Hint = ({
@@ -35,16 +41,20 @@ const Hint = ({
   pixelSize,
   comData,
   offsets,
-  canvas
+  canvas,
 }) => {
 
-  const temerature = getPixelTemperature(
+  const pixel = getPixel(
     mousePosition, 
     pixelSize, 
     comData.data,
     offsets,
     canvas
   )
+
+  const { temperature, xIndex, yIndex } = pixel
+
+  // onHighlightPixel(xIndex, yIndex)
 
   const { x, y } = mousePosition
 
@@ -59,19 +69,28 @@ const Hint = ({
         padding: 5
       }}
     >
-      { temerature
-        ? `${temerature} °C`
+      { temperature
+        ? `${temperature} °C`
         : 'visualization area'
       }
     </Card>
   );
 }
 
-const mapStateToProps = ({data}) => (
+const mapStateToProps = ({ data }) => (
   {
     ...data
   }
 )
 
+const mapDispatchToProps = dispatch => (
+  {
+    onHighlightPixel: (x, y) => dispatch(highlightPixel(x, y))
+  }
+)
 
-export default connect(mapStateToProps)(Hint);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Hint);

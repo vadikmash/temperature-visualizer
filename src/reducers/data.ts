@@ -16,6 +16,7 @@ const initialState = {
   pixelSize: 48,
   context: null,
   offsets: Array(4).fill(Array(16).fill(0)),
+  highlighted: Array(4).fill(Array(16).fill(false)),
   comData: { data: null },
   hintIsVisible: false,
   mousePosition: { x: 0, y: 0 }
@@ -37,6 +38,11 @@ const data = (state = initialState, action) => {
       return {
         ...state,
         hintIsVisible: false      
+      }
+    case ACTIONS.HIGHLIGHT_PIXEL:
+      return {
+        ...state,
+        highlighted: action.highlighted
       }
     case ACTIONS.SET_BLUR:
       return {
