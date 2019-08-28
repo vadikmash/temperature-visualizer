@@ -9,7 +9,6 @@ import {
   findAvailablePorts,
   showHint,
   hideHint,
-  cancelHighlights
 } from '../../actions/data'
 
 
@@ -27,10 +26,7 @@ class Canvas extends React.PureComponent {
     setInterval(findAvailablePorts, 1500)
 
     canvas.addEventListener('mousemove', onShowHint)
-    canvas.addEventListener('mouseleave', () => {
-      onHideHint()
-      onCancelHighlights()
-    })
+    canvas.addEventListener('mouseleave', onHideHint)
   }
 
   render() {
@@ -45,7 +41,7 @@ class Canvas extends React.PureComponent {
         ref={ node => canvas = node }
       >
       </canvas>
-      {/* { hintIsVisible ? <Hint /> : null } */}
+      { hintIsVisible ? <Hint /> : null }
       </>
     )
   }
@@ -63,7 +59,6 @@ const mapDispatchToProps = dispatch => (
     onSetCanvas: canvas => dispatch(setCanvas(canvas)),
     onShowHint: event => dispatch(showHint(event)),
     onHideHint: () => dispatch(hideHint()),
-    onCancelHighlights: () => dispatch(cancelHighlights())
   }
 )
 

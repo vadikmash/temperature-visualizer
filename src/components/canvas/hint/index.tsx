@@ -2,69 +2,30 @@ import React = require('react')
 import { connect } from 'react-redux';
 import { Card } from '@material-ui/core';
 
-import { highlightPixel } from '../../../actions/data'
-
-
-const getPixel = (
-  mousePosition,
-  pixelSize,
-  data,
-  offsets,
-  canvas
-) => {
-  if (data) {
-    const canvasPos = canvas.getBoundingClientRect()
-
-    const relativePositionX = mousePosition.x - canvasPos.left
-    const relativePositionY = mousePosition.y - canvasPos.top
-
-    const x = Math.floor(relativePositionX / pixelSize)
-    const y = Math.floor(relativePositionY / pixelSize)
-
-    const temperatures = String(data).split('~').map(arr => (
-      JSON.parse(arr)
-    ))
-
-    return  {
-      temperature: Math.round(temperatures[y][x] + offsets[y][x]),
-      xIndex: x,
-      yIndex: y
-    }
-  }
-    return {
-      temperature: null,
-    }
-}
 
 const Hint = ({
   mousePosition,
-  pixelSize,
   comData,
-  offsets,
-  canvas,
+  hoverPixel,
+  offsets
 }) => {
+  const { posX, posY } = mousePosition
+  const { x, y } = hoverPixel
+  const { temperatures } = comData
 
-  const pixel = getPixel(
-    mousePosition, 
-    pixelSize, 
-    comData.data,
-    offsets,
-    canvas
-  )
+  let temperature = null
 
-  const { temperature, xIndex, yIndex } = pixel
-
-  // onHighlightPixel(xIndex, yIndex)
-
-  const { x, y } = mousePosition
+  if (temperatures) {
+    temperature = Math.round(temperatures[y][x] + offsets[y][x])
+  }
 
   return (
     <Card
       style={{
         position: 'fixed',
         zIndex: 10,
-        left: x,
-        top: y,
+        left: posX,
+        top: posY,
         transform: 'translateY(-100%)',
         padding: 5
       }}
@@ -83,14 +44,7 @@ const mapStateToProps = ({ data }) => (
   }
 )
 
-const mapDispatchToProps = dispatch => (
-  {
-    onHighlightPixel: (x, y) => dispatch(highlightPixel(x, y))
-  }
-)
-
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Hint);

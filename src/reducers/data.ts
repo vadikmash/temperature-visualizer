@@ -17,9 +17,11 @@ const initialState = {
   context: null,
   offsets: Array(4).fill(Array(16).fill(0)),
   highlighted: Array(4).fill(Array(16).fill(false)),
-  comData: { data: null },
+  comData: { temperatures: null },
   hintIsVisible: false,
-  mousePosition: { x: 0, y: 0 }
+  mousePosition: { posX: 0, poxY: 0 },
+  hoverPixel: { x: null, y: null },
+  hoverTemperature: null
 }
 
 
@@ -29,20 +31,16 @@ const data = (state = initialState, action) => {
       return {
         ...state,
         hintIsVisible: true,
-        mousePosition: {
-          x: action.event.clientX,
-          y: action.event.clientY
-        }
+        hoverTemperature: action.hoverTemperature,
+        hoverPixel: action.hoverPixel,
+        highlighted: action.highlighted,
+        mousePosition: action.mousePosition,
       }
     case ACTIONS.HIDE_HINT:
       return {
         ...state,
-        hintIsVisible: false      
-      }
-    case ACTIONS.HIGHLIGHT_PIXEL:
-      return {
-        ...state,
-        highlighted: action.highlighted
+        hintIsVisible: false,
+        highlighted: action.highlighted,
       }
     case ACTIONS.SET_BLUR:
       return {

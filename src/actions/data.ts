@@ -17,21 +17,41 @@ export const COM_CONNECT = 'COM_CONNECT'
 export const SET_OFFSETS = 'SET_OFFSETS'
 export const SHOW_HINT = 'SHOW_HINT'
 export const HIDE_HINT = 'HIDE_HINT'
-export const HIGHLIGHT_PIXEL = 'HIGHLIGHT_PIXEL'
 
 
-export const showHint = (event) => (
-  {
+export const showHint = (event) => {
+  const state: any = store.getState()
+  const {
+    pixelSize,
+    comData
+  } = state.data
+
+  const posX = event.clientX
+  const posY = event.clientY
+
+  const x = Math.floor(posX / pixelSize)
+  const y = Math.floor(posY / pixelSize)
+
+  const highlighted = Array(4).fill(Array(16)).map(row => row.map(() => {
+    false
+  }))
+  highlighted[y][x] = true
+
+  return  {
     type: SHOW_HINT,
-    event
+    hoverPixel: { x, y },
+    highlighted,
+    mousePosition: { posX, posY }
   }
-)
+}
 
-export const hideHint = () => (
-  {
+export const hideHint = () => {
+  const highlighted = Array(4).fill(Array(16).fill(false))
+  return {
     type: HIDE_HINT,
+    highlighted
   }
-)
+}
 
 export const setCanvas = (canvas) => {
   const context = canvas.getContext('2d')
@@ -97,15 +117,6 @@ export const setVisualizer = (visualizer: string) => (
 export const highlightPixel = (x, y) => {
   let highlighted = Array(4).fill(Array(16)).map(h => h.map(() => false))
   highlighted[y][x] = true
-
-  return {
-    type: HIGHLIGHT_PIXEL,
-    highlighted
-  }
-}
-
-export const cancelHighlights = () => {
-  let highlighted = Array(4).fill(Array(16)).map(h => h.map(() => false))
 
   return {
     type: HIGHLIGHT_PIXEL,
@@ -191,12 +202,20 @@ export const comConnect = () => {
     console.log('Error: ', err.message)
   })
 
+  port.on('close', () => console.log('connection closed'))
+
   const comData = {
     temperatures: null
   }
 
   parser.on('data', data => {
-    comData.temperatures = JSON.parse(data)
+    let temperatures
+    try {
+      temperatures = JSON.parse(data)
+      comData.temperatures = temperatures
+    } catch(e) {
+      console.log(e)
+    }
     const state: any = store.getState()
     const {
       canvas,

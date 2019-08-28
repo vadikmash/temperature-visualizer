@@ -18,10 +18,10 @@ export const drawPixels = (
       ctx.beginPath();
       ctx.rect(i * 48, j * 48, 48, 48)
       ctx.fill()
-      // if (highlighted[j][i]) {
-      //   ctx.strokeStyle = 'white'
-      //   ctx.stroke()
-      // }
+      if (highlighted[j][i]) {
+        ctx.strokeStyle = 'white'
+        ctx.stroke()
+      }
     })
   })
   StackBlur.canvasRGB(canvas, 0, 0, 768, 192, blur);
