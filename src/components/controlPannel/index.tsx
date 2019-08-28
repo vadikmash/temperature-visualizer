@@ -7,7 +7,10 @@ import {
   Select,
   Slider,
   Typography,
-  Button
+  Button,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core';
 
 import {
@@ -18,7 +21,8 @@ import {
   comConnect,
   saveImage,
   logToFile,
-  calibrate
+  calibrate,
+  setDisplayMode
 } from '../../actions/data';
 
 const styles = require('./index.css')
@@ -26,16 +30,19 @@ const styles = require('./index.css')
 
 const ControlPannel = ({ 
   portName,
+  displayMode,
   visualizer,
   blur,
   range,
   avaliablePorts,
+  pannels,
   onSetPortName,
   onSetVisualizer,
   onSetBlur,
   onSetRange,
   onComConnect,
-  onCalibrate
+  onCalibrate,
+  onSetDisplayMode
 }) => (
   <div className={styles.pannel}>
     <Typography id="port-dropdown" gutterBottom>
@@ -139,6 +146,21 @@ const ControlPannel = ({
         Calibrate
       </Button>
     </div>
+    <div>
+      {
+        pannels
+        ? <RadioGroup
+            aria-label="display mode"
+            name="display"
+            value={displayMode}
+            onChange={onSetDisplayMode}
+          >
+            <FormControlLabel value="pixel" control={<Radio />} label="Pixel mode" />
+            <FormControlLabel value="pannel" control={<Radio />} label="Pannel mode" />
+          </RadioGroup>
+        : null
+      }
+    </div>
   </div>
 )
 
@@ -155,7 +177,8 @@ const mapDispatchToProps = dispatch => (
     onSetRange: range => dispatch(setRange(range)),
     onSetVisualizer: visualizer => dispatch(setVisualizer(visualizer)),
     onComConnect: () => dispatch(comConnect()),
-    onCalibrate: () => dispatch(calibrate())
+    onCalibrate: () => dispatch(calibrate()),
+    onSetDisplayMode: event => dispatch(setDisplayMode(event.target.value))
   }
 )
 

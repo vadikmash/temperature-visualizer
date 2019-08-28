@@ -7,16 +7,32 @@ const Hint = ({
   mousePosition,
   comData,
   hoverPixel,
-  offsets
+  offsets,
+  displayMode,
+  hoverPannel,
+  pannels
 }) => {
   const { posX, posY } = mousePosition
+
+
   const { x, y } = hoverPixel
   const { temperatures } = comData
 
   let temperature = null
 
-  if (temperatures) {
-    temperature = Math.round(temperatures[y][x] + offsets[y][x])
+  if (displayMode === 'pixel') {
+    if (temperatures) {
+      temperature = Math.round(temperatures[y][x] + offsets[y][x])
+    }
+  }
+
+  if (hoverPannel && displayMode === 'pannel') {
+    if (temperatures) {
+      temperature = pannels[hoverPannel].reduce((accum, pixel) => {
+        const [x, y] = pixel
+        return accum + Math.round(temperatures[y][x] + offsets[y][x])
+      }, 0) / pannels[hoverPannel].length
+    }
   }
 
   return (
@@ -31,7 +47,9 @@ const Hint = ({
       }}
     >
       { temperature
-        ? `${temperature} °C`
+        ? hoverPannel 
+          ? `${hoverPannel}:   ${temperature} °C`
+          : `${temperature} °C`
         : 'visualization area'
       }
     </Card>

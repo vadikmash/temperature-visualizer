@@ -21,12 +21,28 @@ const initialState = {
   hintIsVisible: false,
   mousePosition: { posX: 0, poxY: 0 },
   hoverPixel: { x: null, y: null },
-  hoverTemperature: null
+  hoverTemperature: null,
+  pannels: null,
+  hoverPannel: '',
+  displayMode: 'pixel'
 }
 
 
 const data = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.SET_DISPLAYMODE:
+      return {
+        ...state,
+        displayMode: action.mode
+      }
+    case ACTIONS.FLUSH_DATA:
+      if (data) {
+        return {
+          ...state,
+          ...action.data
+        }
+      }
+      return state
     case ACTIONS.SHOW_HINT:
       return {
         ...state,
@@ -35,6 +51,7 @@ const data = (state = initialState, action) => {
         hoverPixel: action.hoverPixel,
         highlighted: action.highlighted,
         mousePosition: action.mousePosition,
+        hoverPannel: action.hoverPannel
       }
     case ACTIONS.HIDE_HINT:
       return {

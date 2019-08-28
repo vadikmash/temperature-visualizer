@@ -2,10 +2,9 @@ const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
 const fs = require('fs')
 
-import { drawPixels } from '../drawPixels'
 import store from '../store';
-import { combineReducers } from 'redux';
-import { object } from 'prop-types';
+
+import { drawPixels } from '../drawPixels'
 
 export const SET_BLUR = 'SET_BLUR'
 export const SET_RANGE = 'SET_RANGE'
@@ -17,13 +16,43 @@ export const COM_CONNECT = 'COM_CONNECT'
 export const SET_OFFSETS = 'SET_OFFSETS'
 export const SHOW_HINT = 'SHOW_HINT'
 export const HIDE_HINT = 'HIDE_HINT'
+export const FLUSH_DATA = 'FLUSH_DATA'
+export const SET_DISPLAYMODE = 'SET_DISPLAYMODE'
 
+
+export const setDisplayMode = mode => (
+  {
+    type: SET_DISPLAYMODE,
+    mode
+  }
+)
+
+export const flushData = (data) => (
+  {
+    type: FLUSH_DATA,
+    data
+  }
+)
+
+export const loadConfig = () => {
+  fs.readFile('visualizerconfig.json', (error, buffer) => {
+
+    if (error) {
+      console.log('config file was not found: ')
+      console.log(error.message)
+    } else {
+      const data = JSON.parse(buffer)
+      store.dispatch(flushData(data))
+    }
+  })
+}
 
 export const showHint = (event) => {
   const state: any = store.getState()
   const {
     pixelSize,
-    comData
+    displayMode,
+    pannels
   } = state.data
 
   const posX = event.clientX
@@ -35,13 +64,38 @@ export const showHint = (event) => {
   const highlighted = Array(4).fill(Array(16)).map(row => row.map(() => {
     false
   }))
-  highlighted[y][x] = true
+
+  if (displayMode === 'pixel') {
+    highlighted[y][x] = true
+  }
+
+  let hoverPannel = ''
+
+  if (displayMode === 'pannel') {
+    // looking for pannel, that we hover our mouse over
+    for (const pannel in pannels) {
+      pannels[pannel].forEach(pixel => {
+        if (pixel[0] === x && pixel[1] === y) {
+          hoverPannel = pannel
+        }
+      });
+      if (hoverPannel) break
+    }
+    // highlighting pannel
+    if (hoverPannel) {
+      pannels[hoverPannel].forEach(pixel => {
+        const [x, y] = pixel
+        highlighted[y][x] = true
+      });
+    }
+  }
 
   return  {
     type: SHOW_HINT,
     hoverPixel: { x, y },
     highlighted,
-    mousePosition: { posX, posY }
+    mousePosition: { posX, posY },
+    hoverPannel
   }
 }
 
@@ -114,15 +168,6 @@ export const setVisualizer = (visualizer: string) => (
   }
 )
 
-export const highlightPixel = (x, y) => {
-  let highlighted = Array(4).fill(Array(16)).map(h => h.map(() => false))
-  highlighted[y][x] = true
-
-  return {
-    type: HIGHLIGHT_PIXEL,
-    highlighted
-  }
-}
 
 export const findAvailablePorts = () => {
   SerialPort.list().then(ports => {
