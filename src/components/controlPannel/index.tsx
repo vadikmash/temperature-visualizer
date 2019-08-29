@@ -22,7 +22,8 @@ import {
   saveImage,
   logToFile,
   calibrate,
-  setDisplayMode
+  setDisplayMode,
+  openWorkdir
 } from '../../actions/data';
 
 const styles = require('./index.css')
@@ -137,6 +138,12 @@ const ControlPannel = ({
         onClick={saveImage}
       >
         Save image
+      </Button>
+      <Button
+        color="secondary"
+        onClick={openWorkdir}
+      > 
+        Open folder
       </Button>
       <br />
       <Button

@@ -1,5 +1,3 @@
-import { letterSpacing } from "@material-ui/system";
-
 export const blackAndWhite = (t, bottom, top) => {
   const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
   return `rgb(${shade}, ${shade}, ${shade})`

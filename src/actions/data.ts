@@ -24,6 +24,15 @@ export const SET_DISPLAYMODE = 'SET_DISPLAYMODE'
 export const  INIT_WORKDIR = 'INIT_WORKDIR'
 
 
+export const openWorkdir = () => {
+  const state: any = store.getState()
+  const { shell } = require('electron')
+
+  const { workdir } = state.data.dirs
+
+  shell.openItem(workdir)
+}
+
 export const initWorkdir = (customPpath: any) => {
   const dir = customPpath || os.homedir()
   const workdir = path.resolve(dir, 't-visualizer_data')
