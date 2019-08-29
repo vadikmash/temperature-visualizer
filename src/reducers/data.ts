@@ -1,5 +1,6 @@
 import ACTIONS = require('../actions/data')
 import visualizers = require('../visualizers')
+import { statement } from '@babel/template';
 
 
 const initialState = {
@@ -24,12 +25,22 @@ const initialState = {
   hoverTemperature: null,
   pannels: null,
   hoverPannel: '',
-  displayMode: 'pixel'
+  displayMode: 'pixel',
+  dirs: {
+    workdir: '',
+    photodir: '',
+    recorddir: ''
+  }
 }
 
 
 const data = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.INIT_WORKDIR:
+      return {
+        ...state,
+        dirs: action.dirs
+      }
     case ACTIONS.SET_DISPLAYMODE:
       return {
         ...state,

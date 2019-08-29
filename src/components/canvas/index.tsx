@@ -9,6 +9,7 @@ import {
   findAvailablePorts,
   showHint,
   hideHint,
+  initWorkdir,
   loadConfig
 } from '../../actions/data'
 
@@ -20,11 +21,13 @@ class Canvas extends React.PureComponent {
       onSetCanvas,
       onShowHint,
       onHideHint,
-      onLoadConfig,
+      onInitWorkdir
      }: any = this.props
     onSetCanvas(canvas)
     findAvailablePorts()
     setInterval(findAvailablePorts, 1500)
+
+    onInitWorkdir(null)
 
     loadConfig()
 
@@ -62,7 +65,8 @@ const mapDispatchToProps = dispatch => (
   {
     onSetCanvas: canvas => dispatch(setCanvas(canvas)),
     onShowHint: event => dispatch(showHint(event)),
-    onHideHint: () => dispatch(hideHint())
+    onHideHint: () => dispatch(hideHint()),
+    onInitWorkdir: dir => dispatch(initWorkdir(dir))
   }
 )
 

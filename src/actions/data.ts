@@ -1,6 +1,9 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
 const fs = require('fs')
+const os = require('os')
+const path = require('path')
+
 
 import store from '../store';
 
@@ -18,7 +21,38 @@ export const SHOW_HINT = 'SHOW_HINT'
 export const HIDE_HINT = 'HIDE_HINT'
 export const FLUSH_DATA = 'FLUSH_DATA'
 export const SET_DISPLAYMODE = 'SET_DISPLAYMODE'
+export const  INIT_WORKDIR = 'INIT_WORKDIR'
 
+
+export const initWorkdir = (customPpath: any) => {
+  const dir = customPpath || os.homedir()
+  const workdir = path.resolve(dir, 't-visualizer_data')
+  const photodir = path.resolve(workdir, 'photos')
+  const recorddir = path.resolve(workdir, 'records')
+
+  // make directory and sub directories and config.json if it doesnt exist
+
+  if (!fs.existsSync(workdir)){
+    fs.mkdirSync(workdir);
+    fs.mkdirSync(photodir);
+    fs.mkdirSync(recorddir);
+  } else {
+    if (!fs.existsSync(photodir))
+      fs.mkdirSync(photodir);
+    if (!fs.existsSync(recorddir))
+      fs.mkdirSync(recorddir);
+  }
+
+  return {
+    type: INIT_WORKDIR,
+    dirs: {
+      workdir,
+      photodir,
+      recorddir
+    }
+  }
+
+}
 
 export const setDisplayMode = mode => (
   {
@@ -35,7 +69,12 @@ export const flushData = (data) => (
 )
 
 export const loadConfig = () => {
-  fs.readFile('visualizerconfig.json', (error, buffer) => {
+  const state: any = store.getState()
+  const { workdir } = state.data.dirs
+
+  const configpath = path.resolve(workdir, 'config.json')
+
+  fs.readFile(configpath, (error, buffer) => {
 
     if (error) {
       console.log('config file was not found')
@@ -179,13 +218,18 @@ export const findAvailablePorts = () => {
 
 export const saveImage = () => {
   const state: any = store.getState()
-  const { canvas } = state.data
+  const { canvas, dirs} = state.data
+
   const url = canvas.toDataURL('image/jpg', 0.8)
   const base64Data = url.replace(/^data:image\/png;base64,/, "")
   const date = new Date().toLocaleString().split(', ').join('_').split('.').join('_').split(':').join('_')
-  fs.writeFile(`${date}_image.jpg`, base64Data, 'base64', (err) => {
+
+  const { photodir } = dirs
+  const photopath = path.resolve(photodir, `${date}_image.jpg`)
+
+  fs.writeFile(photopath, base64Data, 'base64', (err) => {
     if (err) console.log(err)
-    console.log('image is saved')
+    console.log(`image is saved to ${photodir}`)
   })
 }
 
@@ -193,7 +237,8 @@ export const saveImage = () => {
 export const logToFile = () => {
   const state: any = store.getState()
   const { temperatures } = state.data.comData
-  const { offsets } = state.data
+  const { offsets, dirs } = state.data
+  
   const offsetTemperatures = temperatures.map((row, i) => row.map((t, j) => 
     Math.round(t + offsets[i][j])
   ))
@@ -202,9 +247,13 @@ export const logToFile = () => {
   const date = new Date().toLocaleString().split(', ').join('_')
   const str = `${date},${json}\r\n`
 
-  fs.appendFile('log.txt', str, (err) =>{
+  const { workdir } = dirs
+
+  const logpath = path.resolve(workdir, 'log.csv')
+
+  fs.appendFile(logpath, str, err => {
     if (err) console.log(err)
-    console.log('logged to log.txt')
+    console.log(`logged to ${workdir}`)
   })
 }
 
