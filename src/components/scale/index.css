@@ -1,0 +1,41 @@
+.wrapper {
+  height: 100%;
+  width: 110px;
+  border-right: 2px solid black;
+  padding: 5px;
+  position: relative;
+  display: flex
+}
+
+.scaleNumbers {
+  width: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.scaleLines {
+  width: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.largeLine {
+  width: 20px;
+  height: 2px;
+  background: black;
+  margin-left: 5px;
+}
+
+.smallLine {
+  width: 15px;
+  height: 1px;
+  background: black;
+}
+
+.palette {
+  border: 2px solid black;
+}

@@ -38,8 +38,7 @@ export const loadConfig = () => {
   fs.readFile('visualizerconfig.json', (error, buffer) => {
 
     if (error) {
-      console.log('config file was not found: ')
-      console.log(error.message)
+      console.log('config file was not found')
     } else {
       const data = JSON.parse(buffer)
       store.dispatch(flushData(data))
@@ -52,14 +51,17 @@ export const showHint = (event) => {
   const {
     pixelSize,
     displayMode,
-    pannels
+    pannels, 
+    canvas
   } = state.data
+
+  const canvasPos = canvas.getBoundingClientRect()
 
   const posX = event.clientX
   const posY = event.clientY
 
-  const x = Math.floor(posX / pixelSize)
-  const y = Math.floor(posY / pixelSize)
+  const x = Math.floor((posX - canvasPos.left) / pixelSize)
+  const y = Math.floor((posY - canvasPos.top)/ pixelSize)
 
   const highlighted = Array(4).fill(Array(16)).map(row => row.map(() => {
     false
