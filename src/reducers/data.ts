@@ -31,12 +31,18 @@ const initialState = {
     recorddir: ''
   },
   recording: false,
-  finishedRecorging: false
+  finishedRecorging: false,
+  logMessages: ['visualizer is running...']
 }
 
 
 const data = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.LOG_TO_CONSOLE:
+      return {
+        ...state,
+        logMessages: [...state.logMessages, action.message]
+      }
     case ACTIONS.INIT_WORKDIR:
       return {
         ...state,

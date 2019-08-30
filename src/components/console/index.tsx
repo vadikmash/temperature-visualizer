@@ -1,15 +1,28 @@
 import React = require('react')
 import { connect } from 'react-redux'
+import { Typography } from '@material-ui/core'
 
 const styles = require('./index.css')
 
 
-const Console = () => {
+const Console = ({ logMessages }) => {
 
   return  (
-    <div className={styles.console}>console</div>
+    <div className={styles.console}>
+      {
+        logMessages.map((message, indx) => (
+          <Typography variant="body1" component="p" key={indx}>{message}</Typography>
+        ))
+      }
+    </div>
   )
 }
 
+const mapStateToProps = ({ data }) => (
+  {
+    ...data
+  }
+)
 
-export default connect()(Console)
+
+export default connect(mapStateToProps)(Console)

@@ -55,7 +55,7 @@ class Canvas extends React.PureComponent {
 }
 
 
-const mapStateToProps = ({data}) => (
+const mapStateToProps = ({ data }) => (
   {
     ...data
   }

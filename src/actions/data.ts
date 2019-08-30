@@ -9,6 +9,8 @@ import store from '../store';
 
 import { drawPixels } from '../drawPixels'
 
+import { log } from '../logger'
+
 export const SET_BLUR = 'SET_BLUR'
 export const SET_RANGE = 'SET_RANGE'
 export const SET_PORT_NAME = 'SET_PORT_NAME'
@@ -26,8 +28,15 @@ export const START_RECORDING = 'START_RECORDING'
 export const PAUSE_RECORDING = 'PAUSE_RECORDING'
 export const RESUME_RECORDING = 'RESUME_RECORDING'
 export const FINISH_RECORDING = 'FINISH_RECORDING'
+export const LOG_TO_CONSOLE = ''
 
 
+export const logToConsole = (message: string) => (
+  {
+    type: LOG_TO_CONSOLE, 
+    message
+  }
+)
 
 export const startRecording = () => {
   const state: any = store.getState()
@@ -40,6 +49,8 @@ export const startRecording = () => {
 
   logToFile(true, true, recordpath)
   const interval = setInterval(() => logToFile(true), 100)
+
+  log(`started recording to: ${recordpath}`)
 
   return {
     type: START_RECORDING,
@@ -55,6 +66,8 @@ export const pauseRecording = () => {
   const { interval } = state.recording 
   clearInterval(interval)
 
+  log(`pused recording`)
+
   return {
     type: PAUSE_RECORDING,
   }
@@ -63,6 +76,8 @@ export const pauseRecording = () => {
 export const resumeRecording = () => {
   logToFile(true, true)
   const interval = setInterval(() => logToFile(true), 100)
+
+  log(`resumed recording`)
 
   return {
     type: RESUME_RECORDING,
@@ -74,8 +89,10 @@ export const resumeRecording = () => {
 
 export const finishRecording = () => {
   const state: any = store.getState()
-  const { interval } = state.recording 
+  const { interval, recordpath } = state.recording 
   clearInterval(interval)
+
+  log(`finished recording to: ${recordpath}`)
 
   return {
     type: FINISH_RECORDING,
@@ -105,13 +122,13 @@ export const initWorkdir = (customPpath: any) => {
     fs.mkdirSync(photodir);
     fs.mkdirSync(recorddir);
     fs.whriteFile(configpath, JSON.stringify({}), err => {
-      if (err) console.log(err)
+      if (err)log(err)
     })
-    console.log(`created new working directory: ${workdir}`)
+   log(`created new working directory: ${workdir}`)
   } else {
     if (!fs.existsSync(configpath))
       fs.writeFile(configpath, JSON.stringify({}), err => {
-        if (err) console.log(err)
+        if (err)log(err)
       })
     if (!fs.existsSync(photodir))
       fs.mkdirSync(photodir);
@@ -130,12 +147,14 @@ export const initWorkdir = (customPpath: any) => {
 
 }
 
-export const setDisplayMode = mode => (
-  {
+export const setDisplayMode = mode => {
+  log(`switched to ${mode} mode`)
+
+  return {
     type: SET_DISPLAYMODE,
     mode
   }
-)
+}
 
 export const flushData = (data) => (
   {
@@ -153,7 +172,7 @@ export const loadConfig = () => {
   fs.readFile(configpath, (error, buffer) => {
 
     if (error) {
-      console.log('config file was not found')
+     log('config file was not found')
     } else {
       const data = JSON.parse(buffer)
       store.dispatch(flushData(data))
@@ -304,8 +323,8 @@ export const saveImage = () => {
   const photopath = path.resolve(photodir, `${date}_image.jpg`)
 
   fs.writeFile(photopath, base64Data, 'base64', (err) => {
-    if (err) console.log(err)
-    console.log(`image is saved to ${photodir}`)
+    if (err) log(err.message)
+    log(`image is saved to ${photopath}`)
   })
 }
 
@@ -337,7 +356,7 @@ export const logToFile = (recording?, resuming?, argRecordpath?) => {
     }
 
     fs.appendFile(recordpath, str, err => {
-      if (err) console.log(err)
+      if (err) log(err.message)
     })
   } else {
     const date = new Date().toLocaleString().split(', ').join('_')
@@ -346,8 +365,8 @@ export const logToFile = (recording?, resuming?, argRecordpath?) => {
     const logpath = path.resolve(workdir, 'log.txt')
 
     fs.appendFile(logpath, str, err => {
-      if (err) console.log(err)
-      console.log(`logged to ${workdir}`)
+      if (err) log(err.message)
+     log(`logged to ${logpath}`)
     })
   }
 }
@@ -365,6 +384,8 @@ export const calibrate = () => {
       average - t
     ))
   ))
+
+  log('calibrated')
 
   return {
     type: SET_OFFSETS,
@@ -387,13 +408,13 @@ export const comConnect = () => {
 
   const parser = port.pipe(new Readline());
 
-  port.on('open', () => console.log('connection opened'));
+  port.on('open', () => log(`connection is opened on ${portName}`));
 
   port.on('error', err => {
-    console.log('Error: ', err.message)
+   log(`Error: ${err.message}`)
   })
 
-  port.on('close', () => console.log('connection closed'))
+  port.on('close', () => log(`connection on ${portName} is closed`))
 
   const comData = {
     temperatures: null
@@ -405,7 +426,7 @@ export const comConnect = () => {
       temperatures = JSON.parse(data)
       comData.temperatures = temperatures
     } catch(e) {
-      console.log(e)
+     log(e.message)
     }
     const state: any = store.getState()
     const {
