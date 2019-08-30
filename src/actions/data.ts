@@ -21,8 +21,66 @@ export const SHOW_HINT = 'SHOW_HINT'
 export const HIDE_HINT = 'HIDE_HINT'
 export const FLUSH_DATA = 'FLUSH_DATA'
 export const SET_DISPLAYMODE = 'SET_DISPLAYMODE'
-export const  INIT_WORKDIR = 'INIT_WORKDIR'
+export const INIT_WORKDIR = 'INIT_WORKDIR'
+export const START_RECORDING = 'START_RECORDING'
+export const PAUSE_RECORDING = 'PAUSE_RECORDING'
+export const RESUME_RECORDING = 'RESUME_RECORDING'
+export const FINISH_RECORDING = 'FINISH_RECORDING'
 
+
+
+export const startRecording = () => {
+  const state: any = store.getState()
+
+  const { dirs } = state.data
+  const { recorddir } = dirs
+
+  const fileDate = new Date().toLocaleString().split(', ').join('_').split('.').join('').split(':').join('')
+  const recordpath = path.resolve(recorddir, `${fileDate}_record.txt`)
+
+  logToFile(true, true, recordpath)
+  const interval = setInterval(() => logToFile(true), 100)
+
+  return {
+    type: START_RECORDING,
+    payload: {
+      interval,
+      recordpath
+    }
+  }
+}
+
+export const pauseRecording = () => {
+  const state: any = store.getState()
+  const { interval } = state.recording 
+  clearInterval(interval)
+
+  return {
+    type: PAUSE_RECORDING,
+  }
+}
+
+export const resumeRecording = () => {
+  logToFile(true, true)
+  const interval = setInterval(() => logToFile(true), 100)
+
+  return {
+    type: RESUME_RECORDING,
+    payload: {
+      interval
+    }
+  }
+}
+
+export const finishRecording = () => {
+  const state: any = store.getState()
+  const { interval } = state.recording 
+  clearInterval(interval)
+
+  return {
+    type: FINISH_RECORDING,
+  }
+}
 
 export const openWorkdir = () => {
   const state: any = store.getState()
@@ -38,6 +96,7 @@ export const initWorkdir = (customPpath: any) => {
   const workdir = path.resolve(dir, 't-visualizer_data')
   const photodir = path.resolve(workdir, 'photos')
   const recorddir = path.resolve(workdir, 'records')
+  const configpath = path.resolve(workdir, 'config.json')
 
   // make directory and sub directories and config.json if it doesnt exist
 
@@ -45,7 +104,15 @@ export const initWorkdir = (customPpath: any) => {
     fs.mkdirSync(workdir);
     fs.mkdirSync(photodir);
     fs.mkdirSync(recorddir);
+    fs.whriteFile(configpath, JSON.stringify({}), err => {
+      if (err) console.log(err)
+    })
+    console.log(`created new working directory: ${workdir}`)
   } else {
+    if (!fs.existsSync(configpath))
+      fs.writeFile(configpath, JSON.stringify({}), err => {
+        if (err) console.log(err)
+      })
     if (!fs.existsSync(photodir))
       fs.mkdirSync(photodir);
     if (!fs.existsSync(recorddir))
@@ -231,7 +298,7 @@ export const saveImage = () => {
 
   const url = canvas.toDataURL('image/jpg', 0.8)
   const base64Data = url.replace(/^data:image\/png;base64,/, "")
-  const date = new Date().toLocaleString().split(', ').join('_').split('.').join('_').split(':').join('_')
+  const date = new Date().toLocaleString().split(', ').join('_').split('.').join('').split(':').join('')
 
   const { photodir } = dirs
   const photopath = path.resolve(photodir, `${date}_image.jpg`)
@@ -243,27 +310,46 @@ export const saveImage = () => {
 }
 
 
-export const logToFile = () => {
+export const logToFile = (recording?, resuming?, argRecordpath?) => {
   const state: any = store.getState()
   const { temperatures } = state.data.comData
   const { offsets, dirs } = state.data
-  
-  const offsetTemperatures = temperatures.map((row, i) => row.map((t, j) => 
-    Math.round(t + offsets[i][j])
-  ))
-
-  const json = JSON.stringify(offsetTemperatures)
-  const date = new Date().toLocaleString().split(', ').join('_')
-  const str = `${date},${json}\r\n`
-
   const { workdir } = dirs
 
-  const logpath = path.resolve(workdir, 'log.csv')
+  
+  const offsetTemperatures = temperatures.map((row, i) => row.map((t, j) => 
+    Math.round((t + offsets[i][j]) * 100) / 100
+  ))
 
-  fs.appendFile(logpath, str, err => {
-    if (err) console.log(err)
-    console.log(`logged to ${workdir}`)
-  })
+
+  const json = JSON.stringify(offsetTemperatures)
+
+   
+  if (recording) {
+    const recordpath = argRecordpath || state.recording.recordpath
+
+    let str
+    if (resuming) {
+      const date = new Date().toLocaleString().split(', ').join('_')
+      str = `\r\n${date}\r\n\r\n\t${json}\r\n`
+    } else {
+      str = `\t${json}\r\n`
+    }
+
+    fs.appendFile(recordpath, str, err => {
+      if (err) console.log(err)
+    })
+  } else {
+    const date = new Date().toLocaleString().split(', ').join('_')
+    const str = `${date}\r\n\t${json}\r\n\r\n`
+
+    const logpath = path.resolve(workdir, 'log.txt')
+
+    fs.appendFile(logpath, str, err => {
+      if (err) console.log(err)
+      console.log(`logged to ${workdir}`)
+    })
+  }
 }
 
 export const calibrate = () => {

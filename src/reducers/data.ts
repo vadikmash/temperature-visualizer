@@ -1,6 +1,5 @@
 import ACTIONS = require('../actions/data')
 import visualizers = require('../visualizers')
-import { statement } from '@babel/template';
 
 
 const initialState = {
@@ -30,7 +29,9 @@ const initialState = {
     workdir: '',
     photodir: '',
     recorddir: ''
-  }
+  },
+  recording: false,
+  finishedRecorging: false
 }
 
 

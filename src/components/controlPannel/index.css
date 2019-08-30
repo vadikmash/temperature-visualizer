@@ -5,4 +5,9 @@
   background: rgb(187, 187, 187);
   padding: 12px;
   border-left: 2px solid rgb(41, 41, 41);
+  overflow: scroll;
+}
+
+.recordButton {
+  margin: 5px
 }

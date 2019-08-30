@@ -22,7 +22,7 @@ const Hint = ({
 
   if (displayMode === 'pixel') {
     if (temperatures) {
-      temperature = Math.round(temperatures[y][x] + offsets[y][x])
+      temperature = (temperatures[y][x] + offsets[y][x]).toFixed(2)
     }
   }
 
@@ -32,6 +32,7 @@ const Hint = ({
         const [x, y] = pixel
         return accum + Math.round(temperatures[y][x] + offsets[y][x])
       }, 0) / pannels[hoverPannel].length
+      temperature = temperature.toFixed(2)
     }
   }
 

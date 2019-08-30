@@ -13,6 +13,8 @@ import {
   Radio
 } from '@material-ui/core';
 
+import Recorder from './recorder';
+
 import {
   setPortName,
   setBlur,
@@ -37,6 +39,8 @@ const ControlPannel = ({
   range,
   avaliablePorts,
   pannels,
+  recording,
+  finishedRecording,
   onSetPortName,
   onSetVisualizer,
   onSetBlur,
@@ -128,7 +132,7 @@ const ControlPannel = ({
     />
     <div>
       <Button
-        onClick={logToFile} 
+        onClick={() => logToFile()} 
         color="primary"
       >
         Log to file
@@ -153,6 +157,9 @@ const ControlPannel = ({
         Calibrate
       </Button>
     </div>
+    <Typography id="port-dropdown" gutterBottom>
+      Display mode
+    </Typography>
     <div>
       {
         pannels
@@ -168,6 +175,7 @@ const ControlPannel = ({
         : null
       }
     </div>
+    <Recorder />    
   </div>
 )
 
