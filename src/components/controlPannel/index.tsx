@@ -83,15 +83,6 @@ const ControlPannel = ({
       <MenuItem key="BW" value="BW">
         Black&White
       </MenuItem>
-      <MenuItem key="R" value="R">
-        Red
-      </MenuItem>
-      <MenuItem key="G" value="G">
-        Green
-      </MenuItem>
-      <MenuItem key="B" value="B">
-        Blue
-      </MenuItem>
       <MenuItem key="RGB" value="RGB">
         RGB
       </MenuItem>

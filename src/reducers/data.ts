@@ -87,15 +87,6 @@ const data = (state = initialState, action) => {
           case 'BW': 
             visualizingFunction = visualizers.blackAndWhite
           break
-          case 'R': 
-            visualizingFunction = visualizers.red
-          break
-          case 'G': 
-            visualizingFunction = visualizers.green
-          break
-          case 'B': 
-            visualizingFunction = visualizers.blue
-          break 
           case 'RGB': 
             visualizingFunction = visualizers.RGB
           break 

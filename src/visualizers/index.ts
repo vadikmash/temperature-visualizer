@@ -3,21 +3,6 @@ export const blackAndWhite = (t, bottom, top) => {
   return `rgb(${shade}, ${shade}, ${shade})`
 }
 
-export const red = (t, bottom, top) => {
-  const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
-  return `rgb(${shade}, 0, 0)`
-}
-
-export const green = (t, bottom, top) => {
-  const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
-  return `rgb(0, ${shade}, 0)`
-}
-
-export const blue = (t, bottom, top) => {
-  const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
-  return `rgb(0, 0, ${shade})`
-}
-
 
 export const RGB = (t, bottom, top) => {
   let shade = (t - bottom ) / (top - bottom) * 255 * 3 
@@ -38,8 +23,8 @@ export const RGB = (t, bottom, top) => {
   if (shade < 256 + 128 - 64 && shade >= 256 - 64) {
     G = (shade - (256 - 64)) * 2
   }
-  if (shade < 512 - 64 && shade >= 256 + 128 - 64) {
-    G = ((512 - 64) - shade) * 2
+  if (shade < 512 && shade >= 256 + 128 - 64) {
+    G = ((512) - shade) * 1.5
   }
   // red
   if (shade < 512 + 256 && shade >= 512 - 128) {
@@ -53,6 +38,7 @@ export const RGB = (t, bottom, top) => {
 
   return `rgb(${R}, ${G}, ${B})`
 }
+
 
 export const RedAndBlue = (t, bottom, top) => {
   const shade = (t - bottom < 0 ? 0 : t - bottom) / (top - bottom) * 255
