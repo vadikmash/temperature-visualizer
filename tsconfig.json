@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "watch": true,
     "target": "es6",
     "module": "esnext",
-    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -19,17 +17,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true
   },
-  "compileOnSave": true,
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ],
   "include": [
     "src"
   ]

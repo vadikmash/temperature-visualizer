@@ -6,13 +6,8 @@
     "name": "vadikmash",
     "email": "vadikmash@gmail.com"
   },
-  "build": {
-    "appId": "your.id",
-    "mac": {
-      "category": "your.app.category.type"
-    }
-  },
-  "main": "./src/main.js",
+  "homepage": "./",
+  "main": "./build/main.js",
   "scripts": {
     "start": "electron .",
     "postinstall": "typings install",

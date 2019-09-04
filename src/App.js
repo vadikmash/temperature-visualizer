@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
+const React = require('react');
 const styles = require('./App.css');
 const Canvas = require('./components/canvas').default;
 const ControlPannel = require('./components/controlPannel').default;

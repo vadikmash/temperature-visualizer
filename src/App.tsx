@@ -14,7 +14,7 @@ const App = () => {
     <div className={styles.wrapper}>
       <Scale />
       <div>
-        {/* <Canvas /> */}
+        <Canvas />
         <Console />
       </div>
       <ControlPannel />
