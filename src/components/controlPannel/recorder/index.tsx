@@ -1,4 +1,4 @@
-import React = require('react')
+import React from 'react'
 import { connect } from 'react-redux';
 
 import {
@@ -76,6 +76,7 @@ const Recorder = ({
     
   </div>
 )
+
 
 const mapStateToProps = ({ recording }) => (
   {

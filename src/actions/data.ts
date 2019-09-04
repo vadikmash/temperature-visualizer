@@ -297,6 +297,11 @@ export const setPortName = (portName: string) => (
   }
 )
 
+export const updatePort = (portName) => {
+  store.dispatch(setPortName(portName))
+  store.dispatch(comConnect())
+}
+
 export const setVisualizer = (visualizer: string) => (
   {
     type: SET_VISUALIZER,

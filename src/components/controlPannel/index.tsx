@@ -1,5 +1,5 @@
-import React = require('react')
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 
 import {
   Input,
@@ -11,161 +11,70 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio
-} from '@material-ui/core';
+} from '@material-ui/core'
 
-import Recorder from './recorder';
+import Recorder from './recorder'
+import PortSelector from './portSelector'
+import VisualizerSelector from './visualizerSelector'
+import RangeSlider from './rangeSlider'
+import BlurSlider from './blurSlider'
+import ModeSelector from './modeSelector';
+
 
 import {
-  setPortName,
   setBlur,
   setRange,
   setVisualizer,
-  comConnect,
   saveImage,
   logToFile,
   calibrate,
   setDisplayMode,
   openWorkdir
-} from '../../actions/data';
+} from '../../actions/data'
 
 const styles = require('./index.css')
 
 
 const ControlPannel = ({ 
-  portName,
-  displayMode,
-  visualizer,
-  blur,
-  range,
-  avaliablePorts,
-  pannels,
-  recording,
-  finishedRecording,
-  onSetPortName,
-  onSetVisualizer,
-  onSetBlur,
-  onSetRange,
-  onComConnect,
   onCalibrate,
-  onSetDisplayMode
 }) => (
   <div className={styles.pannel}>
-    <Typography id="port-dropdown" gutterBottom>
-      Select port
-    </Typography>
-    <Select
-      value={portName}
-      onChange={e => { 
-        onSetPortName(e.target.value)
-        onComConnect()
-      }}
-    >
-      { 
-        avaliablePorts
-        ? avaliablePorts.map(port => (
-            <MenuItem 
-            value={port.comName}
-            key={port.comName}>
-              {port.comName}
-            </MenuItem>
-          )
-        ) 
-        : null
-      }
-    </Select>
-    <Typography id="port-dropdown" gutterBottom>
-      Select visualizer
-    </Typography>
-    <Select
-      value={visualizer}
-      onChange={(e) => onSetVisualizer(e.target.value)}
-    >
-      <MenuItem key="BW" value="BW">
-        Black&White
-      </MenuItem>
-      <MenuItem key="RGB" value="RGB">
-        RGB
-      </MenuItem>
-      <MenuItem key="RB" value="RB">
-        Red&Blue
-      </MenuItem>
-    </Select>
-    <Typography id="range-slider" gutterBottom>
-      Temperature range
-    </Typography>
-    <Slider
-      value={range}
-      onChange={(e, newRange) => onSetRange(newRange)}
-      valueLabelDisplay="auto"
-      aria-labelledby="range-slider"
-    />
-    <Typography id="port-dropdown" gutterBottom>
-      Set blur
-    </Typography>
-    <Slider
-      value={typeof blur === 'number' ? blur : 0}
-      onChange={(e, newBlur) => onSetBlur(newBlur)}
-      aria-labelledby="input-slider"
-    />
-    <Input
-      value={blur}
-      margin="dense"
-      onChange={
-        (e) => onSetBlur(e.target.value === '' ? '' : +e.target.value)
-      }
-      inputProps={{
-        step: 10,
-        min: 0,
-        max: 100,
-        type: 'number',
-        'aria-labelledby': 'input-slider',
-      }}
-    />
+    <PortSelector />
+    <VisualizerSelector />
+    <RangeSlider />
+    {/* <BlurSlider /> */}
     <div>
       <Button
-        onClick={() => logToFile()} 
+        variant="contained"
         color="primary"
+        onClick={() => logToFile()} 
       >
         Log to file
       </Button>
       <Button
-        color="secondary"
+        color="primary"
+        variant="contained"
         onClick={saveImage}
       >
         Save image
       </Button>
       <Button
-        color="secondary"
+        color="primary"
+        variant="contained"
         onClick={openWorkdir}
       > 
         Open folder
       </Button>
       <br />
       <Button
-        color="primary"
+        color="secondary"
+        variant="contained"
         onClick={onCalibrate}
       >
         Calibrate
       </Button>
     </div>
-    <Typography id="port-dropdown" gutterBottom>
-      Display mode
-    </Typography>
-    <div>
-      {
-        pannels
-        ? <RadioGroup
-            aria-label="display mode"
-            name="display"
-            value={displayMode}
-            onChange={onSetDisplayMode}
-          >
-            <FormControlLabel value="pixel" control={<Radio />} label="Pixel mode" />
-            <FormControlLabel value="pannel" control={<Radio />} label="Pannel mode" />
-          </RadioGroup>
-        : null
-      }
-    </div>
+    <ModeSelector />
     <Recorder />    
   </div>
 )
@@ -178,11 +87,6 @@ const mapStateToProps = ({data}) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onSetPortName: port => dispatch(setPortName(port)),
-    onSetBlur: blur => dispatch(setBlur((blur > 100 ? 100 : blur) < 0 ? 0 : (blur > 100 ? 100 : blur))),
-    onSetRange: range => dispatch(setRange(range)),
-    onSetVisualizer: visualizer => dispatch(setVisualizer(visualizer)),
-    onComConnect: () => dispatch(comConnect()),
     onCalibrate: () => dispatch(calibrate()),
     onSetDisplayMode: event => dispatch(setDisplayMode(event.target.value))
   }

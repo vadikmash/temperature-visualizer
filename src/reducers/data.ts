@@ -1,6 +1,5 @@
-import ACTIONS = require('../actions/data')
-import visualizers = require('../visualizers')
-
+import * as ACTIONS from '../actions/data'
+import * as visualizers from '../visualizers'
 
 const initialState = {
   portName: '',

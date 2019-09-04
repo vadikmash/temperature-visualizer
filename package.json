@@ -6,13 +6,20 @@
     "name": "vadikmash",
     "email": "vadikmash@gmail.com"
   },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    }
+  },
   "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
     "postinstall": "typings install",
-    "build": "react-scripts build",
+    "dist": "electron-builder",
+    "build": "",
     "prepare": "electron-build-env npm rebuild",
-    "pack": "electron-packager . temperature-visualizer  --platform=win32 --arch=x64",
+    "pack": "electron-packager . temperature-visualizer___  --platform=win32 --arch=x64 --overwrite",
     "setup": "electron-installer-windows --src temperature-visualizer-win32-x64/ --dest dist/installers/",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
@@ -31,6 +38,9 @@
     "electron-packager": "^14.0.4",
     "electron-windows-installer": "^1.7.8",
     "gulp": "^4.0.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.1.1",
     "typescript": "^3.5.3",
     "typings": "^2.1.1"
   },

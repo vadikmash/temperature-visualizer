@@ -1,4 +1,4 @@
-import ACTIONS = require('../actions/data')
+import * as ACTIONS from '../actions/data'
 
 
 const initialState = {

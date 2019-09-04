@@ -1,4 +1,4 @@
-import React = require('react')
+import React from 'react'
 import { connect } from 'react-redux';
 import { Card } from '@material-ui/core';
 
@@ -28,11 +28,11 @@ const Hint = ({
 
   if (hoverPannel && displayMode === 'pannel') {
     if (temperatures) {
-      temperature = pannels[hoverPannel].reduce((accum, pixel) => {
-        const [x, y] = pixel
-        return accum + Math.round(temperatures[y][x] + offsets[y][x])
-      }, 0) / pannels[hoverPannel].length
-      temperature = temperature.toFixed(2)
+      // temperature = pannels[hoverPannel].reduce((accum, pixel) => {
+      //   const [x, y] = pixel
+      //   return accum + Math.round(temperatures[y][x] + offsets[y][x])
+      // }, 0) / pannels[hoverPannel].length
+      // temperature = temperature.toFixed(2)
     }
   }
 

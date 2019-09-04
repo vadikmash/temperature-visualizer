@@ -1,8 +1,7 @@
-import React = require('react')
+import React from 'react'
 import { connect } from 'react-redux';
 
 const styles = require('./index.css')
-
 
 const drawPalette = (canvas, visualizer) => {
   if (canvas) {

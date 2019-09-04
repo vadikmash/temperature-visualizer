@@ -1,7 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
 let mainWindow;
 function createWindow() {
-    mainWindow = new BrowserWindow({
+    mainWindow = new electron_1.BrowserWindow({
         width: 1100,
         height: 600,
         webPreferences: {
@@ -13,12 +15,12 @@ function createWindow() {
         mainWindow = null;
     });
 }
-app.on('ready', createWindow);
-app.on('window-all-closed', function () {
+electron_1.app.on('ready', createWindow);
+electron_1.app.on('window-all-closed', function () {
     if (process.platform !== 'darwin')
-        app.quit();
+        electron_1.app.quit();
 });
-app.on('activate', function () {
+electron_1.app.on('activate', function () {
     if (mainWindow === null)
         createWindow();
 });
