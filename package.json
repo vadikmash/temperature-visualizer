@@ -7,7 +7,7 @@
     "email": "vadikmash@gmail.com"
   },
   "homepage": "./",
-  "main": "./build/main.js",
+  "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
     "postinstall": "typings install",
