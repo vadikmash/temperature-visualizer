@@ -17,6 +17,7 @@ import { style } from '@material-ui/system';
 const styles = require('./index.css')
 
 
+
 const BlurSlider = ({ 
   blur,
   onSetBlur

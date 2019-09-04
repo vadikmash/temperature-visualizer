@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 const styles = require('./index.css')
 
+
 const drawPalette = (canvas, visualizer) => {
   if (canvas) {
     const ctx = canvas.getContext('2d')

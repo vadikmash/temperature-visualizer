@@ -13,6 +13,7 @@ import { setRange } from '../../../actions/data';
 const styles = require('./index.css')
 
 
+
 const RangeSlider = ({ 
   range,
   onSetRange

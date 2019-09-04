@@ -37,6 +37,7 @@ import {
 const styles = require('./index.css')
 
 
+
 const ControlPannel = ({ 
   onCalibrate,
 }) => (

@@ -14,6 +14,7 @@ import { setVisualizer } from '../../../actions/data';
 const styles = require('./index.css')
 
 
+
 const VisualizerSelector = ({ 
   visualizer,
   onSetVisualizer

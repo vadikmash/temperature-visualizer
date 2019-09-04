@@ -6,15 +6,31 @@
     "name": "vadikmash",
     "email": "vadikmash@gmail.com"
   },
+  "build": {
+    "appId": "com.my-website.my-app",
+    "productName": "MyApp",
+    "copyright": "Copyright © 2019 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
   "homepage": "./",
   "main": "./src/main.js",
   "scripts": {
     "start": "electron .",
-    "postinstall": "typings install",
+    "postinstall": "electron-builder install-app-deps",
     "dist": "electron-builder",
-    "build": "react-scripts build",
+    "build": "rescripts build",
+    "build-pack": "rescripts build -mw",
     "prepare": "electron-build-env npm rebuild",
-    "pack": "electron-packager . temperature-visualizer___  --platform=win32 --arch=x64 --overwrite",
+    "pack": "electron-packager . temperature-visualizer  --platform=win32 --arch=x64 --overwrite",
     "setup": "electron-installer-windows --src temperature-visualizer-win32-x64/ --dest dist/installers/",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
@@ -27,6 +43,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@rescripts/cli": "0.0.11",
+    "@rescripts/rescript-env": "0.0.10",
     "electron": "^5.0.0",
     "electron-builder": "^21.2.0",
     "electron-installer-windows": "^2.0.0",

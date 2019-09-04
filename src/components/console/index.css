@@ -1,10 +1,10 @@
 .console {
   height: calc(100% - 192px);
   background: rgb(221, 221, 221);
-  overflow: scroll;
   padding: 12px;
   border-top: 2px solid rgb(41, 41, 41);
-  display: flex;
+  overflow: scroll;
+  /* display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-end; */
 }

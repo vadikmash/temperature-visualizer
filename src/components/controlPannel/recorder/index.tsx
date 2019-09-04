@@ -21,6 +21,7 @@ import {
 const styles = require('./index.css')
 
 
+
 const Recorder = ({ 
   recording,
   pausedRecording,

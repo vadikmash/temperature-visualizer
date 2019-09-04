@@ -4,6 +4,7 @@ const React = require('react')
 import { connect } from 'react-redux'
 
 const styles = require('./index.css')
+
 const Hint = require('./hint').default
 
 import { 
