@@ -2,7 +2,7 @@
   "compilerOptions": {
     "watch": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "esnext",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -11,10 +11,26 @@
     "noImplicitAny": false,
     "removeComments": true,
     "sourceMap": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
-"compileOnSave": true,
+  "compileOnSave": true,
   "exclude": [
     "node_modules",
     "wwwroot"
+  ],
+  "include": [
+    "src"
   ]
 }

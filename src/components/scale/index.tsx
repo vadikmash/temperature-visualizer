@@ -1,4 +1,6 @@
-import React from 'react'
+const React = require('react')
+
+
 import { connect } from 'react-redux';
 
 const styles = require('./index.css')

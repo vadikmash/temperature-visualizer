@@ -197,9 +197,9 @@ export const showHint = (event) => {
   const x = Math.floor((posX - canvasPos.left) / pixelSize)
   const y = Math.floor((posY - canvasPos.top)/ pixelSize)
 
-  const highlighted = Array(4).fill(Array(16)).map(row => row.map(() => {
+  const highlighted = Array(4).fill(Array(16)).map(row => row.map(() => (
     false
-  }))
+  )))
 
   if (displayMode === 'pixel') {
     highlighted[y][x] = true

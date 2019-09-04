@@ -1,4 +1,6 @@
-import React from 'react'
+const React = require('react')
+
+
 import { connect } from 'react-redux'
 
 import {

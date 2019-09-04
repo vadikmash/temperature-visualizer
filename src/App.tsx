@@ -1,7 +1,8 @@
-import React from 'react'
+const React = require('react')
 
-// const styles = require('./App.css')
-import './App.css'
+
+
+const styles = require('./App.css')
 
 const Canvas = require('./components/canvas').default
 const ControlPannel = require('./components/controlPannel').default
@@ -10,10 +11,10 @@ const Scale = require('./components/scale').default
 
 const App = () => {
   return (
-    <div className={'wrapper'}>
+    <div className={styles.wrapper}>
       <Scale />
       <div>
-        <Canvas />
+        {/* <Canvas /> */}
         <Console />
       </div>
       <ControlPannel />
