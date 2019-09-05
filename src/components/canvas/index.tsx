@@ -44,14 +44,14 @@ class Canvas extends React.PureComponent {
 
     return (
       <>
-      <canvas
-        height="192"
-        width="768"
-        className={styles.canvas}
-        ref={ node => canvas = node }
-      >
-      </canvas>
-      { hintIsVisible ? <Hint /> : null }
+        <canvas
+          height="192"
+          width="768"
+          className={styles.canvas}
+          ref={ node => canvas = node }
+        >
+        </canvas>
+        { hintIsVisible ? <Hint /> : null }
       </>
     )
   }

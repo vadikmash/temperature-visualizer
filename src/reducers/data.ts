@@ -31,12 +31,18 @@ const initialState = {
   },
   recording: false,
   finishedRecorging: false,
-  logMessages: ['visualizer is running...']
+  logMessages: ['visualizer is running...'],
+  isFreezed: false
 }
 
 
 const data = (state = initialState, action) => {
   switch (action.type) {
+    case ACTIONS.TOGGLE_FREEZE:
+      return {
+        ...state,
+        isFreezed: !state.isFreezed
+      }
     case ACTIONS.LOG_TO_CONSOLE:
       return {
         ...state,

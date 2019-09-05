@@ -1,0 +1,8 @@
+.buttonPannel {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.button {
+  margin: 5px;
+}

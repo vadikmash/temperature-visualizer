@@ -22,13 +22,10 @@ import RangeSlider from './rangeSlider'
 import BlurSlider from './blurSlider'
 import ModeSelector from './modeSelector'
 import Calibrator from './calibrator'
-
+import Freezer from './freezer'
 
 
 import {
-  setBlur,
-  setRange,
-  setVisualizer,
   saveImage,
   logToFile,
   setDisplayMode,
@@ -39,9 +36,7 @@ const styles = require('./index.css')
 
 
 
-const ControlPannel = ({ 
-  onCalibrate,
-}) => (
+const ControlPannel = () => (
   <div className={styles.pannel}>
     <PortSelector />
     <VisualizerSelector />
@@ -49,6 +44,7 @@ const ControlPannel = ({
     <BlurSlider />
     <Calibrator />
     <ModeSelector />
+    <Freezer />
     <div>
       <Button
         variant="contained"

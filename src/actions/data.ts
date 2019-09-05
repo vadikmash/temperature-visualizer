@@ -28,8 +28,16 @@ export const START_RECORDING = 'START_RECORDING'
 export const PAUSE_RECORDING = 'PAUSE_RECORDING'
 export const RESUME_RECORDING = 'RESUME_RECORDING'
 export const FINISH_RECORDING = 'FINISH_RECORDING'
-export const LOG_TO_CONSOLE = ''
+export const LOG_TO_CONSOLE = 'LOG_TO_CONSOLE'
+export const TOGGLE_FREEZE = 'TOGGLE_FREEZE'
 
+
+
+export const toggleFreeze = () => (
+  {
+    type: TOGGLE_FREEZE
+  }
+)
 
 export const logToConsole = (message: string) => (
   {
@@ -225,6 +233,25 @@ export const showHint = event => {
       });
     }
   }
+
+  const {
+    context,
+    blur,
+    range,
+    offsets,
+    visualizingFunction,
+    comData
+  } = state.data
+  requestAnimationFrame(() => drawPixels(
+    canvas,
+    context,
+    comData.temperatures,
+    offsets,
+    highlighted,
+    visualizingFunction,
+    range[0], range[1],
+    blur
+  ))
 
   return  {
     type: SHOW_HINT,
@@ -442,6 +469,7 @@ export const comConnect = () => {
   const state: any = store.getState()
 
   const { portName } = state.data
+  const comData = state.data.comData
   const oldPort = state.data.port
   if (oldPort && oldPort.isOpen) oldPort.close()
 
@@ -460,18 +488,11 @@ export const comConnect = () => {
 
   port.on('close', () => log(`connection on ${portName} is closed`))
 
-  const comData = {
-    temperatures: null
-  }
+  // const comData = {
+  //   temperatures: null
+  // }
 
   parser.on('data', data => {
-    let temperatures
-    try {
-      temperatures = JSON.parse(data)
-      comData.temperatures = temperatures
-    } catch(e) {
-     log(e.message)
-    }
     const state: any = store.getState()
     const {
       canvas,
@@ -480,17 +501,27 @@ export const comConnect = () => {
       range,
       offsets,
       highlighted,
-      visualizingFunction
-    } = state.data
-    requestAnimationFrame(() => drawPixels(
-      canvas,
-      context,
-      comData.temperatures,
-      offsets,
-      highlighted,
       visualizingFunction,
-      range[0], range[1],
-      blur))
+      isFreezed
+    } = state.data
+    if (!isFreezed) {
+      try {
+        const temperatures = JSON.parse(data)
+        comData.temperatures = temperatures
+      } catch(e) {
+      log(e.message)
+      }
+      requestAnimationFrame(() => drawPixels(
+        canvas,
+        context,
+        comData.temperatures,
+        offsets,
+        highlighted,
+        visualizingFunction,
+        range[0], range[1],
+        blur
+      ))
+    }
   });
 
   return {
