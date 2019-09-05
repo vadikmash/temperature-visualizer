@@ -6,6 +6,8 @@ import { Typography } from '@material-ui/core'
 
 const styles = require('./index.css')
 
+const Message = require('./message').default
+
 
 class Console extends React.PureComponent {
   props: { logMessages: any; };
@@ -30,10 +32,9 @@ class Console extends React.PureComponent {
         className={styles.console}
         ref={node => this.body = node}
       >
-        <main></main>
           {
             logMessages.map((message, indx) => (
-              <Typography variant="body1" component="p" key={indx}>{message}</Typography>
+              <Message message={message} key={indx}/>
             ))
           }
       </div>
