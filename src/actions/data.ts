@@ -180,7 +180,7 @@ export const loadConfig = () => {
   })
 }
 
-export const showHint = (event) => {
+export const showHint = event => {
   const state: any = store.getState()
   const {
     pixelSize,
@@ -376,25 +376,64 @@ export const logToFile = (recording?, resuming?, argRecordpath?) => {
   }
 }
 
-export const calibrate = () => {
+export const writeToConfig = (newData: object) => {
   const state: any = store.getState()
-  const { temperatures } = state.data.comData
+  const { workdir } = state.data.dirs
+  const configpath = path.resolve(workdir, 'config.json')
 
-  const average = temperatures.reduce((accum, val) => (
-    accum + val.reduce((a, v) => a + v, 0)
-  ), 0) / temperatures.length / temperatures[0].length
+  fs.readFile(configpath, (error, buffer) => {
+    if (error) {
+      log('config file was not found')
+    } else {
+      const configData = JSON.parse(buffer)
 
-  const offsets = temperatures.map(arr => (
-    arr.map(t => (
-      average - t
+      const newConfigData = JSON.stringify({
+        ...configData,
+        ...newData
+      }, null, '\t')
+    
+      fs.writeFile(configpath, newConfigData, err => {
+        log(err.message)
+      })
+    }
+  })
+}
+
+export const setOffsets = (action: string) => {
+  if (action === 'reset') {
+    const offsets = Array(4).fill(Array(16).fill(0))
+
+    log('calibration has been reseted')
+
+    writeToConfig({ offsets })
+
+    return {
+      type: SET_OFFSETS,
+      offsets
+    }
+  }
+  if (action === 'calibrate') {
+    const state: any = store.getState()
+    const { temperatures } = state.data.comData
+
+    const average = temperatures.reduce((accum, val) => (
+      accum + val.reduce((a, v) => a + v, 0)
+    ), 0) / temperatures.length / temperatures[0].length
+
+    const offsets = temperatures.map(arr => (
+      arr.map(t => (
+        average - t
+      ))
     ))
-  ))
 
-  log('calibrated')
+    log('calibrated')
 
-  return {
-    type: SET_OFFSETS,
-    offsets
+    writeToConfig({ offsets })
+
+    return {
+      type: SET_OFFSETS,
+      offsets
+    }
   }
 }
 

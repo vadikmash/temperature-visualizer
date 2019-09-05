@@ -20,7 +20,9 @@ import PortSelector from './portSelector'
 import VisualizerSelector from './visualizerSelector'
 import RangeSlider from './rangeSlider'
 import BlurSlider from './blurSlider'
-import ModeSelector from './modeSelector';
+import ModeSelector from './modeSelector'
+import Calibrator from './calibrator'
+
 
 
 import {
@@ -29,7 +31,6 @@ import {
   setVisualizer,
   saveImage,
   logToFile,
-  calibrate,
   setDisplayMode,
   openWorkdir
 } from '../../actions/data'
@@ -45,7 +46,9 @@ const ControlPannel = ({
     <PortSelector />
     <VisualizerSelector />
     <RangeSlider />
-    {/* <BlurSlider /> */}
+    <BlurSlider />
+    <Calibrator />
+    <ModeSelector />
     <div>
       <Button
         variant="contained"
@@ -68,16 +71,7 @@ const ControlPannel = ({
       > 
         Open folder
       </Button>
-      <br />
-      <Button
-        color="secondary"
-        variant="contained"
-        onClick={onCalibrate}
-      >
-        Calibrate
-      </Button>
     </div>
-    <ModeSelector />
     <Recorder />    
   </div>
 )
@@ -90,7 +84,6 @@ const mapStateToProps = ({data}) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onCalibrate: () => dispatch(calibrate()),
     onSetDisplayMode: event => dispatch(setDisplayMode(event.target.value))
   }
 )

@@ -1,13 +1,8 @@
 const React = require('react')
-
-
 import { connect } from 'react-redux'
-import { Typography } from '@material-ui/core'
 
 const styles = require('./index.css')
-
 const Message = require('./message').default
-
 
 class Console extends React.PureComponent {
   props: { logMessages: any; };
@@ -24,23 +19,20 @@ class Console extends React.PureComponent {
     } 
   }
 
-  render() {
-    const { logMessages } = this.props
-
-    return (
-      <div 
-        className={styles.console}
-        ref={node => this.body = node}
-      >
-          {
-            logMessages.map((message, indx) => (
-              <Message message={message} key={indx}/>
-            ))
-          }
-      </div>
-    )
-  }
+  render = () => (
+    <div 
+      className={styles.console}
+      ref={node => this.body = node}
+    >
+        {
+          this.props.logMessages.map((message, indx) => (
+            <Message message={message} key={indx}/>
+          ))
+        }
+    </div>
+  )
 }
+
 
 const mapStateToProps = ({ data }) => (
   {

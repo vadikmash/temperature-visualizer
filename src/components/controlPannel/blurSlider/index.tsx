@@ -23,8 +23,8 @@ const BlurSlider = ({
   onSetBlur
 }) => (
   <div>
-    <Typography id="port-dropdown" gutterBottom className={styles.lol} style={{background: 'black'}}>
-      Set blurrr@!!
+    <Typography id="port-dropdown" gutterBottom>
+      Set blurrr
     </Typography>
     <Slider
       value={typeof blur === 'number' ? blur : 0}
