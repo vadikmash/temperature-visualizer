@@ -488,10 +488,6 @@ export const comConnect = () => {
 
   port.on('close', () => log(`connection on ${portName} is closed`))
 
-  // const comData = {
-  //   temperatures: null
-  // }
-
   parser.on('data', data => {
     const state: any = store.getState()
     const {

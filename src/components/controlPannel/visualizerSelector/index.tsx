@@ -21,7 +21,7 @@ const VisualizerSelector = ({
 }) => (
   <div>
     <Typography id="port-dropdown" gutterBottom>
-      Select visualizer
+      Visualizer
     </Typography>
     <Select
       value={visualizer}

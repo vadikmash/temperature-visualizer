@@ -23,7 +23,7 @@ const PortSelector = ({
 }) => (
   <div>
     <Typography id="port-dropdown" gutterBottom>
-      Select port
+      ComPort
     </Typography>
     <Select
       value={portName}

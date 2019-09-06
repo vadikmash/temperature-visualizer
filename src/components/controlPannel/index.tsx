@@ -1,18 +1,8 @@
 const React = require('react')
-
-
 import { connect } from 'react-redux'
 
 import {
-  Input,
-  MenuItem,
-  Select,
-  Slider,
-  Typography,
-  Button,
-  RadioGroup,
-  FormControlLabel,
-  Radio
+
 } from '@material-ui/core'
 
 import Recorder from './recorder'
@@ -23,14 +13,6 @@ import BlurSlider from './blurSlider'
 import ModeSelector from './modeSelector'
 import Calibrator from './calibrator'
 import Freezer from './freezer'
-
-
-import {
-  saveImage,
-  logToFile,
-  setDisplayMode,
-  openWorkdir
-} from '../../actions/data'
 
 const styles = require('./index.css')
 
@@ -45,7 +27,7 @@ const ControlPannel = () => (
     <Calibrator />
     <ModeSelector />
     <Freezer />
-    <div>
+    {/* <div>
       <Button
         variant="contained"
         color="primary"
@@ -67,7 +49,7 @@ const ControlPannel = () => (
       > 
         Open folder
       </Button>
-    </div>
+    </div> */}
     <Recorder />    
   </div>
 )
@@ -78,14 +60,8 @@ const mapStateToProps = ({data}) => (
   }
 )
 
-const mapDispatchToProps = dispatch => (
-  {
-    onSetDisplayMode: event => dispatch(setDisplayMode(event.target.value))
-  }
-)
 
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(ControlPannel)

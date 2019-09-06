@@ -1,7 +1,5 @@
 const React = require('react')
 
-
-
 const styles = require('./App.css')
 
 const Canvas = require('./components/canvas').default

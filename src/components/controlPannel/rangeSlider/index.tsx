@@ -20,7 +20,7 @@ const RangeSlider = ({
 }) => (
   <div>
     <Typography id="range-slider" gutterBottom>
-      Temperature range
+      Temperature range, °C
     </Typography>
     <Slider
       value={range}

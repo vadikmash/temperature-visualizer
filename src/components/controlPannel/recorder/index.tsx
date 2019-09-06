@@ -29,54 +29,87 @@ const Recorder = ({
   onStartRecording,
   onPauseRecording,
   onResumeRecording,
-  onFinishRecording
+  onFinishRecording,
+  logToFile,
+  saveImage,
+  openWorkdir
 }) => (
   <div>
     <Typography id="port-dropdown" gutterBottom>
       Recording
     </Typography>
-    {
-      recording 
-      ? !pausedRecording
-        ?
-        <>
-          <Fab
-            className={styles.recordButton}
-            onClick={onPauseRecording}
-          >
-            <Pause />
-          </Fab>
-          <Fab
-            className={styles.recordButton}
-            onClick={onFinishRecording}
-          >
-            <Stop />
-          </Fab>
-        </>
-        :   
-        <>  
-          <Fab
-            className={styles.recordButton}
-            onClick={onResumeRecording}
-          >
-            <FiberManualRecord />
-          </Fab>
-          <Fab
-            className={styles.recordButton}
-            onClick={onFinishRecording}
-          >
-            <Stop />
-          </Fab>
-        </>
-      : 
-      <Fab
-        className={styles.recordButton}
-        onClick={onStartRecording}
-      >
-        <FiberManualRecord />
-      </Fab>
-    }
-    
+    <div className={styles.saveAndLog}>
+      <div className={styles.button}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => logToFile()} 
+        >
+          Log to file
+        </Button>
+      </div>
+      <div className={styles.button}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={saveImage}
+        >
+          Save image
+        </Button>
+      </div>
+    </div>
+    <div className={styles.recorder}>
+      {
+        recording 
+        ? !pausedRecording
+          ?
+          <>
+            <Fab
+              className={styles.recordButton}
+              onClick={onPauseRecording}
+            >
+              <Pause />
+            </Fab>
+            <Fab
+              className={styles.recordButton}
+              onClick={onFinishRecording}
+            >
+              <Stop />
+            </Fab>
+          </>
+          :   
+          <>  
+            <Fab
+              className={styles.recordButton}
+              onClick={onResumeRecording}
+            >
+              <FiberManualRecord />
+            </Fab>
+            <Fab
+              className={styles.recordButton}
+              onClick={onFinishRecording}
+            >
+              <Stop />
+            </Fab>
+          </>
+        : 
+        <Fab
+          className={styles.recordButton}
+          onClick={onStartRecording}
+        >
+          <FiberManualRecord />
+        </Fab>
+      }
+    </div>
+    <div className={styles.button}>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={openWorkdir}
+      > 
+        Open folder
+      </Button>
+    </div>
   </div>
 )
 

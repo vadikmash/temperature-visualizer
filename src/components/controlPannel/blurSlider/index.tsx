@@ -24,27 +24,30 @@ const BlurSlider = ({
 }) => (
   <div>
     <Typography id="port-dropdown" gutterBottom>
-      Set blurrr
+      Set blur
     </Typography>
-    <Slider
-      value={typeof blur === 'number' ? blur : 0}
-      onChange={(e, newBlur) => onSetBlur(newBlur)}
-      aria-labelledby="input-slider"
-    />
-    <Input
-      value={blur}
-      margin="dense"
-      onChange={
-        (e) => onSetBlur(e.target.value === '' ? '' : +e.target.value)
-      }
-      inputProps={{
-        step: 10,
-        min: 0,
-        max: 100,
-        type: 'number',
-        'aria-labelledby': 'input-slider',
-      }}
-    />
+    <div className={styles.inputs}>
+      <Slider
+        className={styles.slider}
+        value={typeof blur === 'number' ? blur : 0}
+        onChange={(e, newBlur) => onSetBlur(newBlur)}
+        aria-labelledby="input-slider"
+      />
+      <Input
+        value={blur}
+        margin="dense"
+        onChange={
+          (e) => onSetBlur(e.target.value === '' ? '' : +e.target.value)
+        }
+        inputProps={{
+          step: 10,
+          min: 0,
+          max: 100,
+          type: 'number',
+          'aria-labelledby': 'input-slider',
+        }}
+      />
+    </div>
   </div>
 )
 

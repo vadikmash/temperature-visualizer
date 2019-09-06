@@ -33,8 +33,8 @@ const ModeSelector = ({
             value={displayMode}
             onChange={onSetDisplayMode}
           >
-            <FormControlLabel value="pixel" control={<Radio />} label="Pixel mode" />
-            <FormControlLabel value="pannel" control={<Radio />} label="Pannel mode" />
+            <FormControlLabel value="pixel" control={<Radio />} label="Pixel" />
+            <FormControlLabel value="pannel" control={<Radio />} label="Pannel" />
           </RadioGroup>
         : null
       }
