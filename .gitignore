@@ -4,9 +4,8 @@ dist
 public
 build
 temperature-visualizer-win32-x64
-temperature-visualizer-win32-x64_
-temperature-visualizer-win32-x64__
-temperature-visualizer-win32-x64___
+
+*.rar
 
 
 *.js
